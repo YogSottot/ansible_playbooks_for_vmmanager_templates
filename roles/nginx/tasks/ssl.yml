@@ -1,0 +1,17 @@
+---
+- name: Generate self-signed SSL certificates
+  openssl_certificate:
+      path: /etc/nginx/ssl/default.key
+      privatekey_path: /etc/nginx/ssl/default.pem
+      csr_path: /etc/nginx/ssl/ansible.com.csr
+      provider: selfsigned
+
+- name: Generate X bit dhparam.pem file (this may take a while)
+  openssl_dhparam:
+      path: /etc/nginx/ssl/dhparam.pem
+
+- name: Check letsencrypt exist
+  stat:
+      path: "/etc/letsencrypt/live/{{ site_domain }}"
+  register: stat_result
+

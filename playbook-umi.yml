@@ -1,0 +1,15 @@
+---
+# playbook.yml file.
+- hosts: umi-cms
+  become: yes
+  roles:
+   - sysctl
+   - packages
+   - percona-db
+   - umi-cms
+   - liquidprompt
+   - nginx
+   - certbot
+   - nginx
+   - php-fpm
+  tags: initial

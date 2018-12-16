@@ -1,0 +1,21 @@
+---
+- name: Create default nginx directories
+  file:
+    path: '{{ item }}'
+    state: 'directory'
+    owner: 'root'
+    group: 'root'
+    mode: '0755'
+  with_items:
+    - "{{ nginx_conf_file_path }}/map"
+    - "{{ nginx_conf_file_path }}/settings"
+    - "{{ nginx_conf_file_path }}/site_avaliable"
+    - "{{ nginx_conf_file_path }}/site_enabled"
+    - "{{ nginx_conf_file_path }}/site_include"
+    - "{{ nginx_conf_file_path }}/ssl"
+
+- name: Add letsencrypt dir
+  file:
+      path: /opt/letsencrypt/
+      state: directory
+      owner: "{{ nginx_user }}"

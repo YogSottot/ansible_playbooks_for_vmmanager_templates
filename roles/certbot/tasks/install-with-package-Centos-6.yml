@@ -1,0 +1,10 @@
+---
+- name: Download Certbot
+  get_url:
+   url: "https://dl.eff.org/certbot-auto"
+   dest: /usr/local/bin/certbot-auto
+   mode: 0555
+
+- name: Set Certbot script variable.
+  set_fact:
+    certbot_script: "/usr/local/bin/certbot-auto"

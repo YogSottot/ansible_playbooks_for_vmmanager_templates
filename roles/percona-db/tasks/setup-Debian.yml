@@ -1,0 +1,20 @@
+---
+- name: Add Percona repositories
+  apt_repository:
+    repo: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items:
+     - deb http://repo.percona.com/apt {{ ansible_distribution_release }} main
+     - deb-src http://repo.percona.com/apt {{ ansible_distribution_release }} main
+
+- name: Install python packages
+  apt: pkg={{ item }} state=present
+  with_items:
+    - python-mysqldb
+
+- name: Install Percona packages
+  apt: pkg={{ item }} state=present
+  with_items:
+    - percona-server-server-{{ percona_server_version }}
+    - percona-server-client-{{ percona_server_version }}

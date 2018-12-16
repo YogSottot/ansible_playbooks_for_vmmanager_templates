@@ -1,0 +1,4 @@
+---
+site_user: user
+nginx_user: "{{ site_user }}"
+site_root: "{{ nginx_site_root }}"

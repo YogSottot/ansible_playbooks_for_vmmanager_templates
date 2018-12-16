@@ -1,0 +1,26 @@
+server {
+    listen       443 http2 default_server;
+    server_name  {{ site_domain }} www.{{ site_domain }};
+
+    {% if stat_result.stat.exists == true %}
+    ssl_certificate         /etc/letsencrypt/live/{{ site_domain }}/fullchain.pem;
+    ssl_certificate_key     /etc/letsencrypt/live/{{ site_domain }}/privkey.pem;
+    ssl_trusted_certificate /etc/letsencrypt/live/{{ site_domain }}/chain.pem;
+    {% elseif %}
+    ssl_certificate         /etc/nginx/ssl/default.pem;
+    ssl_certificate_key     /etc/nginx/ssl/default.key;
+    ssl_trusted_certificate /etc/nginx/ssl/default.pem;
+    {% endif%}
+    
+    access_log /var/log/nginx/{{ site_domain }}_access.log main;
+    error_log  /var/log/nginx/{{ site_domain }}_error.log warn;
+    
+    root $root_path;
+    set $root_path {{ nginx_site_root }};
+
+    charset UTF-8;
+    disable_symlinks if_not_owner from=$root_path;
+    index index.php index.html;
+
+    include {{ nginx_conf_file_path }}/site_include/*.conf;
+}

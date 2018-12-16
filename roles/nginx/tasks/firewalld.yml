@@ -1,0 +1,34 @@
+---
+# Firewalld setup
+- name: Make override dir for service nginx
+  file:
+   path: /etc/systemd/system/nginx.service.d
+   state: directory
+
+- name: Enable autorestart of services
+  copy:
+   src: override.conf
+   dest: /etc/systemd/system/nginx.service.d/override.conf
+
+- name: Install Firewalld
+  yum: name=firewalld state=present
+
+- name: Firewalld service state
+  service: name=firewalld state=restarted enabled=yes
+
+- name: insert firewalld rule for nginx
+  firewalld:
+   port: "{{ nginx_http_port }}/tcp"
+   zone: web
+   permanent: true
+   state: enabled
+
+- name: insert firewalld rule for nginx
+  firewalld:
+   port: "{{ nginx_https_port }}/tcp"
+   zone: web
+   permanent: true
+   state: enabled
+
+- name: Firewalld service state
+  service: name=firewalld state=reloaded enabled=yes

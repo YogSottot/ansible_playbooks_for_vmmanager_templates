@@ -1,0 +1,30 @@
+---
+# Nginx setup.
+- name: Copy nginx configuration in place.
+  template:
+    src: "{{ nginx_conf_template }}"
+    dest: "{{ nginx_conf_file_path }}"
+    owner: root
+    mode: 0644
+  notify:
+    - reload nginx
+
+- name: Copy nginx configs in place.
+  file:
+    src: '{{item}}'
+    dest: "{{ nginx_conf_file_path }}/settings/{{item}}"
+    owner: root
+    mode: 0644
+  loop: "{{ lookup('fileglob'  'nginx_common/*.yml' ) }}"
+  notify:
+    - reload nginx
+
+- name: Copy nginx common vhost include in place.
+  file:
+    src: '{{item}}'
+    dest: "{{ nginx_conf_file_path }}/site_include/{{item}}"
+    owner: root
+    mode: 0644
+  loop: "{{ lookup('fileglob'  'vhost_include/*.yml' ) }}"
+  notify:
+    - reload nginx

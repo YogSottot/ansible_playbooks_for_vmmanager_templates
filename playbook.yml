@@ -1,0 +1,62 @@
+---
+# playbook.yml file.
+- hosts: all
+  become: yes
+  roles:
+   #- sysctl
+   #- packages
+   #- liquidprompt
+   #- php-fpm
+   #- test
+  tags: initial
+  tasks:
+  - debug: var=ansible_facts['default_ipv4']['address']
+  - debug: var=playbook_dir
+  - debug: var={{ 60 | random(seed=inventory_hostname) | pow(2) |int}}
+ # - debug:
+  #    msg: '{{ item }}'
+    # Only works with Python 2
+    #loop: "{{ hosts.keys() }}"
+    # Works with both Python 2 and Python 3
+    #loop: "{{ hosts.items() | list }}"
+  #- command: echo {{ item }}
+    #loop: [ 0, 2, 4, 6, 8, 10 ]
+    #when: item > 5
+  #- command: ls /
+    #register: home_dirs
+
+    
+#jinja2: trim_blocks: "true", lstrip_blocks: "false"
+
+# Allow include_tasks to take wildcard
+# include_tasks: '{{item}}'
+# loop: "{{ lookup('fileglob'  'dir/*.yml' ) }}"
+
+#{% for key, value in my_dict.iteritems() %}
+#    <dt>{{ key|e }}</dt>
+#    <dd>{{ value|e }}</dd>
+#{% endfor %}
+
+
+
+
+
+
+
+
+#  - user:
+#      name: "{{ item.user }}"
+#      uid: 600
+#      group: bitrix
+#      groups: sftp
+#      non_unique: yes
+#      create_home: no
+#      home: /home/bitrix
+#      password: "{{ item.pass }}"
+#      #state: absent
+#      #force: yes
+#    loop:
+#     - user: 'orza'
+#       pass: "{{ 'pass1orza' | password_hash('sha512') }}"
+#     - user: 'karikh'
+#       pass: "{{ 'pass2karikh' | password_hash('sha512') }}"

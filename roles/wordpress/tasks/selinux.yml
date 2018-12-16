@@ -1,0 +1,43 @@
+---
+- name: install SEManage
+  yum: pkg=policycoreutils-python state=present
+
+- name: set the SELinux policy for the Wordpress directory
+  command: semanage fcontext -a -t httpd_sys_content_t "{{ site_root }}(/.*)?"
+  tags:
+  - skip_ansible_lint
+
+- name: set the SELinux policy for wp-config.php
+  command: semanage fcontext -a -t httpd_sys_script_exec_t "{{ site_root }}/wp-config\.php"
+  tags:
+  - skip_ansible_lint
+
+- name: set the SELinux policy for wp-content directory
+  command: semanage fcontext -a -t httpd_sys_rw_content_t "{{ site_root }}/wp-content(/.*)?"
+  tags:
+  - skip_ansible_lint
+
+- name: set the SELinux policy for the *.php files
+  command: semanage fcontext -a -t httpd_sys_script_exec_t "{{ site_root }}/.*\.php"
+  tags:
+  - skip_ansible_lint
+
+- name: set the SELinux policy for the Upgrade directory
+  command: semanage fcontext -a -t httpd_sys_rw_content_t "{{ site_root }}/wp-content/upgrade(/.*)?"
+  tags:
+  - skip_ansible_lint
+
+- name: set the SELinux policy for the Uploads directory
+  command: semanage fcontext -a -t httpd_sys_rw_content_t "{{ site_root }}/wp-content/uploads(/.*)?"
+  tags:
+  - skip_ansible_lint
+
+- name: set the SELinux policy for the wp-includes php files
+  command: semanage fcontext -a -t httpd_sys_script_exec_t "{{ site_root }}/wp-includes/.*\.php"
+  tags:
+  - skip_ansible_lint
+
+- name: set the SELinux on all the Files
+  command: restorecon -RF "{{ site_root }}"
+  tags:
+  - skip_ansible_lint

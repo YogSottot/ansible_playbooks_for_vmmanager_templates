@@ -1,0 +1,10 @@
+[LICENSE]
+domain = "{{ ansible_fqdn }}"
+ip = "{{ ansible_default_ipv4.address }}"
+key = ""
+[DB]
+host = "localhost"
+port = ""
+user = "{{ umi_db_user }}"
+password = "{{ umi_db_password }}"
+dbname = "{{ umi_db_name }}"
