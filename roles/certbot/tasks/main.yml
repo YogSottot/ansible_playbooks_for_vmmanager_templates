@@ -1,7 +1,7 @@
 ---
 - import_tasks: include-vars.yml
 
-- import_tasks: "{{ item }}"
+- include_tasks: "{{ item }}"
   with_first_found:
     - "install-with-package-{{ ansible_distribution }}-{{ ansible_distribution_version }}.yml"
     - "install-with-package-{{ ansible_distribution }}.yml"

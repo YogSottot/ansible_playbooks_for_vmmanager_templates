@@ -1,0 +1,5 @@
+---
+- name: Ensure that the procps package is installed
+  apt:
+    name: procps
+    state: present
