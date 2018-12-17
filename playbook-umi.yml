@@ -3,13 +3,18 @@
 - hosts: umi-cms
   become: yes
   roles:
-   - sysctl
-   - packages
+  # - sysctl
+  # - packages
    - percona-db
-   - umi-cms
-   - liquidprompt
-   - nginx
-   - certbot
-   - nginx
-   - php-fpm
+  # - role: repo-remi
+  #   when: ansible_os_family == 'RedHat'
+  # - php
+  # - php-versions
+  # - php-fpm
+  # - umi-cms
+  # - liquidprompt
+  # - nginx
+  # - certbot
+  # - nginx
+  # - php-fpm
   tags: initial

@@ -1,23 +1,4 @@
 ---
-- name: Copy the REMI repository definition
-  copy: src=remi.repo dest=/etc/yum.repos.d/
-
-- name: Copy the REMI-php73 repository definition
-  copy: src=remi-php73.repo dest=/etc/yum.repos.d/
-
-- name: Create the GPG key for REMI
-  copy: src=RPM-GPG-KEY-remi dest=/etc/pki/rpm-gpg
-
-- name: Install epel-release
-  yum:
-   name: epel-release
-   state: present
-
-- name: Install php-fpm and deps
-  yum:
-   name: "{{ php_fpm_deps }}"
-   state: present
-
 - name: Make override dir for service php-fpm
   file:
    path: /etc/systemd/system/php-fpm.service.d
@@ -41,15 +22,15 @@
 - name: Change ownership of php installation
   file: path=/var/lib/php/ owner={{ site_user }} group={{ site_user }} state=directory recurse=yes
 
-- name: selinux
-  include: selinux.yml
+#- name: selinux
+#  include: selinux.yml
 
 - name: Disable default pool
   command: mv /etc/php-fpm.d/www.conf /etc/php-fpm.d/www.disabled creates=/etc/php-fpm.d/www.disabled
   notify: reload php-fpm
 
 - name: Copy php-fpm configuration
-  template: src=wordpress.conf dest=/etc/php-fpm.d/
+  template: src=default.conf dest="/etc/php-fpm.d/{{ nginx_user }}.conf"
   notify: reload php-fpm
 
 - name: setup hostname
