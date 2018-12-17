@@ -1,11 +1,65 @@
 ---
- - name: Creates config directory
-   file: path=/root/.config/ state=directory
- - name: Creates liquidprompt directory
-   file: path=/opt/liquidprompt/ state=directory
- - name: copy liquidpromp
-   copy: src=liquidprompt dest=/opt/liquidprompt/liquidprompt owner=root group=root mode=0700
- - name: copy liquidpromprc
-   copy: src=liquidpromptrc dest=/root/.config/liquidpromptrc owner=root group=root mode=0600
- - name: copy bashrc
-   copy: src=bashrc dest=/root/.bashrc owner=root group=root mode=0600
+- name: Creates config directory
+  file:
+    path: /root/.config/
+    state: directory
+
+- name: Creates liquidprompt directory
+  file:
+    path: /opt/liquidprompt/
+    state: directory
+
+- name: copy liquidpromp
+  copy:
+    src: liquidprompt
+    dest: /opt/liquidprompt/liquidprompt
+    owner: root
+    group: root
+    mode: 0700
+
+- name: copy liquidpromprc
+  copy:
+    src: liquidpromptrc
+    dest: /root/.config/liquidpromptrc
+    owner: root
+    group: root
+    mode: 0600
+
+- name: copy bashrc
+  copy:
+    src: bashrc
+    dest: /root/.bashrc
+    owner: root
+    group: root
+    mode: 0600
+
+- name: Creates user config directory
+  file:
+      path: "/home/{{ site_user }}/.config/"
+      state: directory
+      owner: "{{ site_user }}"
+
+- name: Copy liquidpromprc for user
+  file:
+      src: liquidpromptrc
+      path: "/home/{{ site_user }}/.config/liquidpromptrc"
+      owner: "{{ site_user }}"
+
+- name: Copy bashrc for user
+  file:
+      src: bashrc_user
+      path: "/home/{{ site_user }}/.bashrc"
+      owner: "{{ site_user }}"
+      mode: 0600
+
+- name: Copy tuning-primer.sh
+  file:
+      src: tuning-primer.sh
+      path: "/usr/local/bin/tuning-primer.sh"
+      mode: 0755
+
+- name: Copy mysqltuner.pl
+  file:
+      src: tuning-primer.sh
+      path: "/usr/local/bin/mysqltuner.pl"
+      mode: 0755

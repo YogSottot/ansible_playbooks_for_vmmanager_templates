@@ -12,7 +12,7 @@ if [ -f /etc/bashrc ]; then
         . /etc/bashrc
 fi
 
-alias mytuner='curl -sL https://raw.github.com/major/MySQLTuner-perl/master/mysqltuner.pl | perl'
-alias myprimer='curl -sL https://raw.githubusercontent.com/RootService/tuning-primer/master/tuning-primer.sh | bash'
+alias mytuner='/usr/local/bin/mysqltuner.pl'
+alias myprimer='/usr/local/bin/tuning-primer.sh'
 [[ $- = *i* ]] && source /opt/liquidprompt/liquidprompt
 
