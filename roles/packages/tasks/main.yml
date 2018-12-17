@@ -1,10 +1,11 @@
 ---
-- name: Install epel-release
-  yum:
-   name: epel-release
-   state: present
+# Variable setup.
+- name: Include OS-specific variables.
+  include_vars: "{{ ansible_os_family }}.yml"
 
-- name: Install standart packages
-  yum:
-   name: "{{ standart_packages }}"
-   state: present
+# Setup/install tasks.
+- include_tasks: setup-RedHat.yml
+  when: ansible_os_family == 'RedHat'
+
+- include_tasks: setup-Debian.yml
+  when: ansible_os_family == 'Debian'

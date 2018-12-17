@@ -15,7 +15,7 @@ echo "/swapfile1 none swap sw 0 0" >> /etc/fstab
 
 apt-get install software-properties-common
 apt-add-repository --yes --update ppa:ansible/ansible
-apt-get install ansible git -y
+apt-get install ansible git python -y
 
 cd /root
 git clone https://github.com/YogSottot/ansible_playbooks_for_vmmanager_templates/

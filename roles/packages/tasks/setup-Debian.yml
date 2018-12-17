@@ -1,0 +1,5 @@
+---
+- name: Install standart packages
+  apt:
+   name: "{{ standart_packages }}"
+   state: present

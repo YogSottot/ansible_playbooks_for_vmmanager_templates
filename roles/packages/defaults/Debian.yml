@@ -1,10 +1,8 @@
 ---
 standart_packages:
  - bash-completion
- - bash-completion-extras
- - bind-utils
+ - dnsutils
  - curl
- - deltarpm
  - gdb
  - git
  - htop
@@ -17,10 +15,7 @@ standart_packages:
  - ncdu
  - net-tools
  - nmap
- - policycoreutils-python
  - psmisc
- - setools-console
  - tmux
  - traceroute
- - wget 
- - yum-utils
+ - wget
