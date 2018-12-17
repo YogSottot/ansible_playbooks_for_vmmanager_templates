@@ -42,7 +42,7 @@
 
 - name: Setup umi config
   include: umi_config.yml
-  when: "'umi' in group_names"
+  when: "'umi-cms' in group_names"
 
 # Firealld setup.
 - name: Setup firewalld
