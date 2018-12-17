@@ -1,6 +1,7 @@
 ---
 # defaults file for mysql
 percona_server_version: 57
+percona_debian_server_version: 5.7
 
 mysqld:
   datadir: /var/lib/mysql

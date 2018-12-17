@@ -7,8 +7,6 @@
   register: percona_server
 
 - name: Install Percona Utilities
-  yum: name={{ item }} state=present
-  with_items:
-    - percona-toolkit
-    - percona-xtrabackup
-    - MySQL-python
+  yum: 
+    name: "{{ percona_utilities }}"
+    state: present

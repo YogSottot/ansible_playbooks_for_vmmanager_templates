@@ -1,2 +1,7 @@
 ---
 percona_yum_repo: https://www.percona.com/redir/downloads/percona-release/redhat/latest/percona-release-0.1-6.noarch.rpm
+
+percona_utilities:
+    - percona-toolkit
+    - percona-xtrabackup-24
+    - MySQL-python

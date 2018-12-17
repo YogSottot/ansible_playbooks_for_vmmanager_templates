@@ -1,0 +1,6 @@
+---
+percona_server:
+    - percona-server-server-{{ percona_debian_server_version }}
+    - percona-server-client-{{ percona_debian_server_version }}
+    - percona-toolkit
+    - percona-xtrabackup-24

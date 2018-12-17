@@ -1,5 +1,5 @@
 [mysqld]
-{% for key, value in mysqld.iteritems() %}
+{% for key, value in mysqld.dict.items() %}
 {% if value == None %}
 {{ key }}
 {% else %}
