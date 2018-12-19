@@ -3,3 +3,4 @@ hosts.ini
 hosts.yml
 /inventory
 /cache
+*.retry
