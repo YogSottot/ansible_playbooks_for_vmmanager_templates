@@ -1,0 +1,3 @@
+---
+- include: config.yml
+  tags: pam_limits_config

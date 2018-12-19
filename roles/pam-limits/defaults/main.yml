@@ -1,0 +1,4 @@
+---
+pam_limits_config_file_path: /etc/security/limits.d
+pam_limits_config_file_name: 99-ansible.conf
+pam_limits_config: []
