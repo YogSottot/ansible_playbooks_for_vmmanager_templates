@@ -31,11 +31,19 @@
   when: percona_mysql_include_tokudb_variables and percona_mysql_transparent_hugepages.stdout == 'always'
   tags: percona_mysql_tokudb_prereq
 
+
+# Check whether there's a existinig user or whether you have to use root
+- name: Check whether there's your user on the machine
+  action: shell /usr/bin/getent passwd mysql | /usr/bin/wc -l | tr -d ''
+  register: user_exist
+  tags: skip_ansible_lint
+
 - name: add mysql group if it doesn't exist
   group:
     name=mysql
     system=yes
     state=present
+  when: user_exist.stdout == 0
 
 - name: add mysql user if it doesn't exist
   user:
@@ -46,6 +54,7 @@
     home=/dev/null
     shell={{ percona_mysql_user_shell }}
     state=present
+  when: user_exist.stdout == 0
 
 - name: create and manage percona_mysql_cnf_dir directory
   file:

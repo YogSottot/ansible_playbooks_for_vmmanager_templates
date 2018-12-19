@@ -94,33 +94,33 @@
     - percona_mysql_manage_security
     - skip_ansible_lint
 
-- name: check if /etc/apparmor.d/local directory exists
-  stat:
-    path=/etc/apparmor.d/local
-  changed_when: false
-  register: percona_mysql_apparmor_check
-  when: ansible_os_family == 'Debian'
-  tags: percona_mysql_manage_security
+#- name: check if /etc/apparmor.d/local directory exists
+#  stat:
+#    path=/etc/apparmor.d/local
+#  changed_when: false
+#  register: percona_mysql_apparmor_check
+#  when: ansible_os_family == 'Debian'
+#  tags: percona_mysql_manage_security
 
-- name: copy and manage local usr.sbin.mysqld
-  template:
-    src=usr.sbin.mysqld.j2
-    dest=/etc/apparmor.d/local/usr.sbin.mysqld
-    owner=root
-    group=root
-    mode=0644
-  register: percona_mysql_apparmor
-  when: ansible_os_family == 'Debian' and (percona_mysql_apparmor_check.stat.isdir is defined and percona_mysql_apparmor_check.isdir)
-  tags: percona_mysql_manage_security
+#- name: copy and manage local usr.sbin.mysqld
+#  template:
+#    src=usr.sbin.mysqld.j2
+#    dest=/etc/apparmor.d/local/usr.sbin.mysqld
+#    owner=root
+#    group=root
+#    mode=0644
+#  register: percona_mysql_apparmor
+#  when: ansible_os_family == 'Debian' and (percona_mysql_apparmor_check.stat.isdir is defined and percona_mysql_apparmor_check.isdir)
+#  tags: percona_mysql_manage_security
 
-- name: reload apparmor service if the local usr.sbin.mysqld has changed
-  service:
-    name: apparmor
-    state: reloaded
-  when: ansible_os_family == 'Debian' and percona_mysql_apparmor.changed
-  tags:
-    - percona_mysql_manage_security
-    - skip_ansible_lint
+#- name: reload apparmor service if the local usr.sbin.mysqld has changed
+#  service:
+#    name: apparmor
+#    state: reloaded
+#  when: ansible_os_family == 'Debian' and percona_mysql_apparmor.changed
+#  tags:
+#    - percona_mysql_manage_security
+#    - skip_ansible_lint
 
 - name: check if error log has been created
   stat:

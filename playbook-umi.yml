@@ -5,7 +5,7 @@
   roles:
   # - sysctl
   # - packages
-   - percona-db
+   - percona_mysql
   # - role: repo-remi
   #   when: ansible_os_family == 'RedHat'
   # - php
