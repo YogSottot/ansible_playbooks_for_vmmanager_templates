@@ -1,0 +1,34 @@
+---
+- name: include OS specific vars
+  include_vars: "{{ ansible_os_family }}.yml"
+
+- name: include general mysql configuration options
+  include_vars: "defaults/{{ item }}.yml"
+  with_items:
+    - cnf_general
+    - cnf_connectivity
+    - cnf_cache
+    - cnf_innodb
+    - cnf_replication
+    - cnf_logging
+
+- name: include percona specific options
+  include_vars: defaults/cnf_percona.yml
+
+- name: include tokudb configuration options
+  include_vars: defaults/cnf_tokudb.yml
+
+- name: include percona threadpooling configuration options
+  include_vars: defaults/cnf_threadpool.yml
+
+- name: include ssl configuration options
+  include_vars: defaults/cnf_ssl.yml
+
+- name: include percona audit logging options
+  include_vars: defaults/cnf_audit.yml
+
+- name: include numa options
+  include_vars: defaults/cnf_numa.yml
+
+- name: include PXC options
+  include_vars: defaults/cnf_pxc.yml
