@@ -4,9 +4,9 @@
 ### Can use FLUSH ERROR LOGS; on mysql 5.5+
 
 {{ "%s/%s"|format(percona_mysql_log_dir, percona_mysql_logdir_variables.percona_mysql_log_error.value) }} {
-    create 640 mysql root
+    create 640 mysql mysql
     daily
-    minsize 512M
+    minsize 20M
     rotate 7
     notifempty
     missingok
@@ -14,10 +14,11 @@
     delaycompress
     sharedscripts
     postrotate
-    {% if percona_mysql_server_version|replace(".","") < 55 %}
-       env HOME=/root/ `which mysql` -e 'FLUSH LOGS'
-    {% else %}
-       env HOME=/root/ `which mysql` -e 'FLUSH ERROR LOGS'
-    {% endif %}
+        # just if mysqld is really running
+        if test -x /usr/bin/mysqladmin && \
+           /usr/bin/mysqladmin ping &>/dev/null
+        then
+           /usr/bin/mysqladmin flush-logs
+        fi
     endscript
 }

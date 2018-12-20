@@ -7,7 +7,7 @@
 {{ "%s/%s"|format(percona_mysql_log_dir, percona_mysql_logdir_variables.percona_mysql_slow_query_log_file.value) }} {
     create 660 mysql mysql
     daily
-    minsize 512M
+    minsize 20M
     rotate 7
     notifempty
     missingok
@@ -15,10 +15,11 @@
     delaycompress
     sharedscripts
     postrotate
-    {% if percona_mysql_server_version|replace(".","") < 55 %}
-       env HOME=/root/ `which mysql` -e 'select @@global.long_query_time into @lqt_save; set global long_query_time=2000; select sleep(2); FLUSH LOGS; select sleep(2); set global long_query_time=@lqt_save'
-    {% else %}
-       env HOME=/root/ `which mysql` -e 'select @@global.long_query_time into @lqt_save; set global long_query_time=2000; select sleep(2); FLUSH SLOW LOGS; select sleep(2); set global long_query_time=@lqt_save'
-    {% endif %}
+        # just if mysqld is really running
+        if test -x /usr/bin/mysqladmin && \
+           /usr/bin/mysqladmin ping &>/dev/null
+        then
+           /usr/bin/mysqladmin flush-logs
+        fi
     endscript
 }
