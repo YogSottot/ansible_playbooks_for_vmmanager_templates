@@ -9,21 +9,21 @@ percona_mysql_logdir_variables:
     comment:
     option: log-error
     variable:
-    value: mysql_error.log
+    value: error.log
     include: true
     dynamic: false
   percona_mysql_general_log_file:
     comment:
     option: general_log_file
     variable: general_log_file
-    value: mysql_general.log
-    include: true
+    value: general.log
+    include: false
     dynamic: true
   percona_mysql_slow_query_log_file:
     comment:
     option: slow_query_log_file
     variable: slow_query_log_file
-    value: mysql_slow.log
+    value: slow.log
     include: true
     dynamic: true
 
@@ -39,14 +39,14 @@ percona_mysql_logging_variables:
     comment:
     option: slow-query-log
     variable: slow_query_log
-    value: 'ON'
+    value: 'OFF'
     include: true
     dynamic: true
   percona_mysql_long_query_time:
     comment:
     option: long_query_time
     variable: long_query_time
-    value: 0
+    value: 0.03
     include: true
     dynamic: true
   percona_mysql_log_slow_admin_statements:

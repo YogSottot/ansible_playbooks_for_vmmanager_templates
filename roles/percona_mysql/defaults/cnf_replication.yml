@@ -10,42 +10,42 @@ percona_mysql_replicationdir_variables:
     option: master-info-file
     variable:
     value: master.info
-    include: true
+    include: false
     dynamic: false
   percona_mysql_log_bin:
     comment:
     option: log-bin
     variable:
     value: mysql-bin
-    include: true
+    include: false
     dynamic: false
   percona_mysql_log_bin_index:
     comment:
     option: log-bin-index
     variable:
     value: mysql-bin.index
-    include: true
+    include: false
     dynamic: false
   percona_mysql_relay_log_info_file:
     comment:
     option: relay_log_info_file
     variable:
     value: mysql-relay.info
-    include: true
+    include: false
     dynamic: false
   percona_mysql_relay_log:
     comment:
     option: relay-log
     variable:
     value: mysql-relay
-    include: true
+    include: false
     dynamic: false
   percona_mysql_relay_log_index:
     comment:
     option: relay_log_index
     variable:
     value: mysql-relay.index
-    include: true
+    include: false
     dynamic: false
 
 percona_mysql_replication_variables:
@@ -68,49 +68,49 @@ percona_mysql_replication_variables:
     option: server-id
     variable: server_id
     value: "{{ ansible_default_ipv4.address|replace('.','')|default(1) | int }}"
-    include: true
+    include: false
     dynamic: true
   percona_mysql_auto_increment_increment:
     comment:
     option: auto_increment_increment
     variable: auto_increment_increment
     value: 1
-    include: true
+    include: false
     dynamic: true
   percona_mysql_auto_increment_offset:
     comment:
     option: auto_increment_offset
     variable: auto_increment_offset
     value: 1
-    include: true
+    include: false
     dynamic: true
   percona_mysql_skip_slave_start:
     comment:
     option: skip-slave-start
     variable:
     value: 1
-    include: true
+    include: false
     dynamic: false
   percona_mysql_max_binlog_size:
     comment: "Currently we have to supply value in bytes here to enable the dynamic refresh to work"
     option: max_binlog_size
     variable: max_binlog_size
     value: 104857600
-    include: true
+    include: false
     dynamic: true
   percona_mysql_log_slave_updates:
     comment:
     option: log-slave-updates
     variable:
     value: 1
-    include: true
+    include: false
     dynamic: false
   percona_mysql_binlog_format:
     comment: "Can be set to STATEMENT, MIXED, ROW"
     option: binlog-format
     variable: binlog_format
     value: ROW
-    include: true
+    include: false
     dynamic: true
   percona_mysql_binlog_row_image:
     comment:
@@ -138,14 +138,14 @@ percona_mysql_replication_variables:
     option: expire_logs_days
     variable: expire_logs_days
     value: 7
-    include: true
+    include: false
     dynamic: true
   percona_mysql_relay_log_purge:
     comment:
     option: relay_log_purge
     variable: relay_log_purge
     value: 'ON'
-    include: true
+    include: false
     dynamic: true
   percona_mysql_slave_compressed_protocol:
     comment:

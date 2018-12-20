@@ -12,7 +12,7 @@ percona_mysql_connection_variables:
     comment:
     option: bind-address
     variable:
-    value: "::"
+    value: "127.0.0.1"
     include: true
     dynamic: false
   percona_mysql_back_log:
@@ -26,7 +26,7 @@ percona_mysql_connection_variables:
     comment:
     option: skip-name-resolve
     variable:
-    value: 0
+    value: 1
     include: true
     dynamic: false
   percona_mysql_safe_user_create:
@@ -54,14 +54,14 @@ percona_mysql_connection_variables:
     comment:
     option: max_connections
     variable: max_connections
-    value: 500
+    value: 50
     include: true
     dynamic: true
   percona_mysql_max_user_connections:
     comment:
     option: max_user_connections
     variable: max_user_connections
-    value: 400
+    value: 50
     include: true
     dynamic: true
   percona_mysql_max_connect_errors:
@@ -75,7 +75,7 @@ percona_mysql_connection_variables:
     comment: "Currently we have to supply value in bytes here to enable the dynamic refresh to work"
     option: max_allowed_packet
     variable: max_allowed_packet
-    value: 16777216
+    value: 134217728
     include: true
     dynamic: true
   percona_mysql_net_read_timeout:

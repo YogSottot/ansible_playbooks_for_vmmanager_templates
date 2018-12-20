@@ -12,11 +12,11 @@
 
 - name: change flavor to XtraDB Cluster if Galera install enabled
   set_fact: percona_mysql_pkg_flavor="XtraDB-Cluster"
-  when: percona_mysql_include_galera_variables and {{ percona_mysql_server_version|replace(".","")|int }} >= 55
+  when: 'percona_mysql_include_galera_variables and percona_mysql_server_version|replace(".","")|int >= "55"'
 
 - name: change type to TokuDB if TokuDB install enabled
   set_fact: percona_mysql_pkg_type="tokudb"
-  when: percona_mysql_include_tokudb_variables and {{ percona_mysql_server_version|replace(".","")|int }} >= 56
+  when: 'percona_mysql_include_tokudb_variables and percona_mysql_server_version|replace(".","")|int >= "56"'
 
 - name: check whether Transparent HugePages are enabled
   shell: 'cat /sys/kernel/mm/transparent_hugepage/enabled | grep -Po "\[\K[^\]]*"'
@@ -34,27 +34,32 @@
 
 # Check whether there's a existinig user or whether you have to use root
 - name: Check whether there's your user on the machine
-  action: shell /usr/bin/getent passwd mysql | /usr/bin/wc -l | tr -d ''
+  shell: /usr/bin/getent passwd mysql | /usr/bin/wc -l | tr -d ''
   register: user_exist
   tags: skip_ansible_lint
 
 - name: add mysql group if it doesn't exist
   group:
-    name=mysql
-    system=yes
-    state=present
-  when: user_exist.stdout == 0
+    name: mysql
+    system: yes
+    state: present
+  when: user_exist.stdout == '0'
+
+- name: debug task
+  debug:
+    msg: var="{{ user_exist.stdout }}"
+
 
 - name: add mysql user if it doesn't exist
   user:
-    name=mysql
-    system=yes
-    group=mysql
-    comment="MySQL Server"
-    home=/dev/null
-    shell={{ percona_mysql_user_shell }}
-    state=present
-  when: user_exist.stdout == 0
+    name: mysql
+    system: yes
+    group: mysql
+    comment: "MySQL Server"
+    home: /dev/null
+    shell: "{{ percona_mysql_user_shell }}"
+    state: present
+  when: user_exist.stdout == '0'
 
 - name: create and manage percona_mysql_cnf_dir directory
   file:
@@ -108,7 +113,7 @@
 - name: create context mapping for non-standard percona_mysql_port (if the port is not already listening)
   command:
     semanage port -a -t mysqld_port_t -p tcp {{ percona_mysql_port.value }}
-  when: ansible_os_family == 'RedHat' and {{ percona_mysql_port.value }} != 3306 and percona_mysql_port_check.failed
+  when: "ansible_os_family == 'RedHat' and percona_mysql_port.value != '3306' and percona_mysql_port_check.failed"
   tags: percona_mysql_manage_security
 
 - name: copy my.cnf

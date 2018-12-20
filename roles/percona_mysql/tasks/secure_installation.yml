@@ -16,11 +16,11 @@
   register: mysql_root_password_temp
   ignore_errors: true
   tags: register
-  when: "{{ percona_mysql_server_version }} == 57 or {{ percona_mysql_server_version }} == 80"
+  when: 'percona_mysql_server_version|replace(".","") >= "5.7"'
 
-- debug:
-    var: mysql_root_password_temp.stdout_lines
-  when: mysql_root_password_temp.stdout != ''
+#- debug:
+#    var: mysql_root_password_temp.stdout_lines
+#  when: mysql_root_password_temp.stdout != ''
 
 - name: Generate local random password that we'll use for root@localhost in MySQL
   command: "echo {{ percona_mysql_root_password | default(lookup('password', '/tmp/percona_mysql/' + inventory_hostname + '_percona_mysql_root_password_file length=12 chars=ascii_letters,digits'), true) }}"
@@ -30,28 +30,28 @@
     - register
     - skip_ansible_lint
 
-- debug:
-    var: percona_mysql_root_password
-  when: percona_mysql_root_password.stdout != ''
+#- debug:
+#    var: percona_mysql_root_password
+#  when: percona_mysql_root_password.stdout != ''
 
 - name: Set new root password using SET PASSWORD syntax for PS55/56
   command: mysql -e 'SET PASSWORD = PASSWORD('"{{ percona_mysql_root_password.stdout }}"') ' -uroot -p'' }}
   register: mysql_change_root_password
   ignore_errors: true
   tags: register
-  when: "{{ percona_mysql_server_version }} == 55 or {{ percona_mysql_server_version }} == 56"
+  when: 'percona_mysql_server_version|replace(".","") < "5.7"'
 
 - name: Set new root password using ALTER USER syntax for PS57+
   command: mysql -e 'ALTER USER user() IDENTIFIED BY "{{ percona_mysql_root_password.stdout }}" ' --connect-expired-password -uroot -p{{ mysql_root_password_temp.stdout }}
   register: mysql_change_root_password
   ignore_errors: true
   tags: register
-  when: "{{ percona_mysql_server_version }} == 57 or {{ percona_mysql_server_version }} == 80"
+  when: 'percona_mysql_server_version|replace(".","") >= "5.7"'
 
-- debug:
-    msg: Current value of mysql_change_root_password
-    var: mysql_change_root_password
-  when: mysql_change_root_password.stdout != ''
+#- debug:
+#    msg: Current value of mysql_change_root_password
+#    var: mysql_change_root_password
+#  when: mysql_change_root_password.stdout != ''
 
 - name: Install root client configuration file in /root/.my.cnf
   template:
@@ -73,9 +73,9 @@
     - register
     - skip_ansible_lint
 
-- debug:
-    var: percona_mysql_user_password
-  when: percona_mysql_user_password.stdout != ''
+#- debug:
+#    var: percona_mysql_user_password
+#  when: percona_mysql_user_password.stdout != ''
 
 - name: Create the local Percona MySQL User
   mysql_user:

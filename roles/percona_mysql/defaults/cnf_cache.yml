@@ -28,20 +28,20 @@ percona_mysql_cache_variables:
     comment:
     option: table_open_cache
     variable: table_open_cache
-    value: 8192
+    value: 350000
     include: true
     dynamic: true
   percona_mysql_tmp_table_size:
     comment: "Currently we have to supply value in bytes here to enable the dynamic refresh to work"
     option: tmp_table_size
     variable: tmp_table_size
-    value: 16777216
+    value: 134217728
     include: true
     dynamic: true
   percona_mysql_max_heap_table_size:
     comment: "Currently we have to supply value in bytes here to enable the dynamic refresh to work"
     option: max_heap_table_size
     variable: max_heap_table_size
-    value: 16777216
+    value: 134217728
     include: true
     dynamic: true

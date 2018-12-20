@@ -58,13 +58,13 @@ percona_mysql_innodb_variables:
     option: innodb_io_capacity
     variable: innodb_io_capacity
     value: 200
-    include: true
+    include: false
     dynamic: true
   percona_mysql_innodb_log_file_size:
     comment:
     option: innodb_log_file_size
     variable:
-    value: 64M
+    value: "{{ ( ( ansible_memtotal_mb / 4 ) / 8 ) | int }}"
     include: true
     dynamic: false
   percona_mysql_innodb_file_per_table:
@@ -79,7 +79,7 @@ percona_mysql_innodb_variables:
     option: innodb_open_files
     variable: innodb_open_files
     value: 1024
-    include: true
+    include: false
     dynamic: true
   percona_mysql_innodb_file_format:
     comment: "Antelope, Barracuda"
@@ -100,35 +100,35 @@ percona_mysql_innodb_variables:
     option: innodb_write_io_threads
     variable:
     value: 4
-    include: true
+    include: false
     dynamic: false
   percona_mysql_innodb_read_io_threads:
     comment:
     option: innodb_read_io_threads
     variable:
     value: 4
-    include: true
+    include: false
     dynamic: false
   percona_mysql_innodb_thread_concurrency:
     comment:
     option: innodb_thread_concurrency
     variable: innodb_thread_concurrency
     value: 0
-    include: true
+    include: false
     dynamic: true
   percona_mysql_innodb_concurrency_tickets:
     comment:
     option: innodb_concurrency_tickets
     variable: innodb_concurrency_tickets
     value: 10000
-    include: true
+    include: false
     dynamic: true
   percona_mysql_innodb_support_xa:
     comment:
     option: innodb_support_xa
     variable: innodb_support_xa
     value: 'ON'
-    include: true
+    include: false
     dynamic: true
   percona_mysql_innodb_autoinc_lock_mode:
     comment: "Can be set to 0, traditional.  1, consecutive.  2, interleaved."

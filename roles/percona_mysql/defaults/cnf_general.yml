@@ -17,7 +17,7 @@ percona_mysql_data_dir:
 percona_mysql_tmp_dir:
   comment:
   option: tmpdir
-  value: /var/lib/mysql-tmp
+  value: /var/run/mysqld/
 
 percona_mysql_general_variables:
   percona_mysql_default_storage_engine:
@@ -39,27 +39,27 @@ percona_mysql_general_variables:
     option: sysdate-is-now
     variable:
     value: 0
-    include: true
+    include: false
     dynamic: false
   percona_mysql_transaction_isolation:
     comment: "Can be set to READ-UNCOMMITTED, READ-COMMITTED, REPEATABLE-READ, SERIALIZABLE"
     option: transaction-isolation
     variable: tx_isolation
-    value: REPEATABLE-READ
+    value: READ-COMMITTED
     include: true
     dynamic: true
   percona_mysql_character_set_server:
     comment:
     option: character-set-server
     variable: character_set_server
-    value: utf8
+    value: utf8mb4
     include: true
     dynamic: true
   percona_mysql_collation_server:
     comment:
     option: collation-server
     variable: collation_server
-    value: utf8_general_ci
+    value: utf8mb4_unicode_ci
     include: true
     dynamic: true
   percona_mysql_event_scheduler:
@@ -67,7 +67,7 @@ percona_mysql_general_variables:
     option: event-scheduler
     variable: event_scheduler
     value: 'OFF'
-    include: true
+    include: false
     dynamic: true
   percona_mysql_performance_schema:
     comment:
