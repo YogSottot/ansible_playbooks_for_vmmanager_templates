@@ -54,14 +54,14 @@ percona_mysql_logging_variables:
     option: log-slow-admin-statements
     variable:
     value: 1
-    include: true
+    include: false
     dynamic: false
   percona_mysql_log_slow_slave_statements:
     comment:
     option: log-slow-slave-statements
     variable:
     value: 1
-    include: true
+    include: false
     dynamic: false
   percona_mysql_log_queries_not_using_indexes:
     comment:
@@ -77,10 +77,10 @@ percona_mysql_logging_variables:
     value: 1000
     include: false
     dynamic: true
-  percona_mysql_log_warnings:
+  percona_mysql_log_error_verbosity:
     comment:
-    option: log-warnings
-    variable: log_warnings
+    option: log_error_verbosity
+    variable: log_error_verbosity
     value: 1
-    include: true
+    include: false
     dynamic: true

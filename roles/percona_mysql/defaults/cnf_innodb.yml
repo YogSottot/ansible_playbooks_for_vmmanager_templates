@@ -86,14 +86,14 @@ percona_mysql_innodb_variables:
     option: innodb_file_format
     variable: innodb_file_format
     value: Barracuda
-    include: true
+    include: false
     dynamic: true
   percona_mysql_innodb_file_format_max:
     comment: "Antelope, Barracuda"
     option: innodb_file_format_max
     variable: innodb_file_format_max
     value: Barracuda
-    include: true
+    include: false
     dynamic: true
   percona_mysql_innodb_write_io_threads:
     comment:

@@ -11,6 +11,7 @@ percona_mysql_pkg: Percona-{{ percona_mysql_pkg_flavor }}-{{ percona_mysql_pkg_t
 percona_mysql_additional_pkgs:
     - MySQL-python
     - percona-toolkit
+    - epel-release
 
 percona_mysql_backup_pkgs:
     - percona-xtrabackup-24

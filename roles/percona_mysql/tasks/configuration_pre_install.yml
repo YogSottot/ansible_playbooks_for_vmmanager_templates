@@ -110,11 +110,11 @@
   register: percona_mysql_port_check
   tags: percona_mysql_manage_security
 
-- name: create context mapping for non-standard percona_mysql_port (if the port is not already listening)
-  command:
-    semanage port -a -t mysqld_port_t -p tcp {{ percona_mysql_port.value }}
-  when: "ansible_os_family == 'RedHat' and percona_mysql_port.value != '3306' and percona_mysql_port_check.failed"
-  tags: percona_mysql_manage_security
+#- name: create context mapping for non-standard percona_mysql_port (if the port is not already listening)
+#  command:
+#    semanage port -a -t mysqld_port_t -p tcp {{ percona_mysql_port.value }}
+#  when: "ansible_os_family == 'RedHat' and percona_mysql_port.value != '3306' and percona_mysql_port_check.failed"
+#  tags: percona_mysql_manage_security
 
 - name: copy my.cnf
   template:

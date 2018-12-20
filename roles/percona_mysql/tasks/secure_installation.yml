@@ -12,7 +12,7 @@
     selevel=s0
 
 - name: Find temporary password from error log on 5.7+
-  shell: "grep 'temporary.*root@localhost' /var/log/mysql/mysql_error.log | sed 's/.*root@localhost.* //'"
+  shell: "grep 'temporary.*root@localhost' /var/log/mysql/error.log | sed 's/.*root@localhost.* //'"
   register: mysql_root_password_temp
   ignore_errors: true
   tags: register
@@ -42,10 +42,12 @@
   when: 'percona_mysql_server_version|replace(".","") < "5.7"'
 
 - name: Set new root password using ALTER USER syntax for PS57+
-  command: mysql -e 'ALTER USER user() IDENTIFIED BY "{{ percona_mysql_root_password.stdout }}" ' --connect-expired-password -uroot -p{{ mysql_root_password_temp.stdout }}
-  register: mysql_change_root_password
   ignore_errors: true
-  tags: register
+  shell: 'mysqladmin -u root --password="{{ percona_mysql_root_password.stdout }}" password "{{ mysql_root_password_temp.stdout }}"'
+  register: mysql_change_root_password
+  tags:
+   - register
+   - skip_ansible_lint
   when: 'percona_mysql_server_version|replace(".","") >= "5.7"'
 
 #- debug:

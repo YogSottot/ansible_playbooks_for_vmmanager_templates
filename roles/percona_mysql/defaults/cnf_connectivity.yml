@@ -41,7 +41,7 @@ percona_mysql_connection_variables:
     option: secure-auth
     variable: secure_auth
     value: 'ON'
-    include: true
+    include: false
     dynamic: true
   percona_mysql_read_only:
     comment:

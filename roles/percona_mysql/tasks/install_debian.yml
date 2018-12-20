@@ -1,14 +1,16 @@
 ---
+- name: Install dirmngr packages
+  apt: pkg=dirmngr state=present
+
 - name: install percona server apt-key
   apt_key:
-    keyserver={{ percona_mysql_key_server }}
-    id=1C4CBDCDCD2EFD2A
+    keyserver="{{ percona_mysql_key_server }}"
+    id=9334A25F8507EFA5
     state=present
 
-- name: install percona repo on debian family hosts
-  apt_repository:
-    repo="{{ percona_mysql_repo }}"
-    state=present
+- name: Add Percona repositories
+  apt:
+      deb: "https://repo.percona.com/apt/percona-release_0.1-6.{{ansible_distribution_release}}_all.deb"
   register: percona_mysql_apt_repo
 
 - name: update apt cache
@@ -37,7 +39,7 @@
   apt:
     name="{{ percona_mysql_pkg }}"
     state={{ percona_mysql_state|default('present') }}
-    default_release="{{ percona_mysql_release }}"
+    #default_release="{{ percona_mysql_release }}"
   environment:
     DEBIAN_FRONTEND: noninteractive
   register: percona_mysql_pkg_check_debian

@@ -26,7 +26,7 @@ percona_mysql_check_upgrade: true
 
 # Should we force a MySQL restart if the my.cnf changes?
 percona_mysql_force_restart: false
-percona_mysql_key_server: keys.gnupg.net
+percona_mysql_key_server: keyserver.ubuntu.com
 
 # MySQL root password (The recommendation is to use ansible-vault)
 # - if password is blank, the password will be automatically generated.
