@@ -146,7 +146,9 @@
   ignore_errors: true
 
 - name: Remove the passwords tmp directory
+  become: no
   file:
       path: /tmp/percona_mysql/
       state: absent
+  delegate_to: 127.0.0.1
 ...
