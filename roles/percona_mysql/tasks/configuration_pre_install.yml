@@ -95,15 +95,15 @@
 - name: create and mysql directories and files
   include: configuration_mysql_dir.yml
 
-- name: check if mysql is listening on the percona_mysql_port
-  wait_for:
-    port={{ percona_mysql_port.value }}
-    timeout=1
-    state=started
-  changed_when: false
-  ignore_errors: yes
-  register: percona_mysql_port_check
-  tags: percona_mysql_manage_security
+#- name: check if mysql is listening on the percona_mysql_port
+#  wait_for:
+#    port={{ percona_mysql_port.value }}
+#    timeout=1
+#    state=started
+#  changed_when: false
+#  ignore_errors: yes
+#  register: percona_mysql_port_check
+#  tags: percona_mysql_manage_security
 
 #- name: create context mapping for non-standard percona_mysql_port (if the port is not already listening)
 #  command:
