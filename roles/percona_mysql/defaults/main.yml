@@ -14,6 +14,8 @@ percona_mysql_service_name: mysql
 #   - master_slave
 percona_mysql_install: master
 
+percona_mysql_password_changed: "/root/.my.cnf"
+
 # By default we just want to ensure that MySQL is installed. To override this
 # and perform an upgrade, you need to explicitly set percona_mysql_upgrade to
 # true. Any other value, will result in the default behaviour of simply

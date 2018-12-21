@@ -11,6 +11,14 @@
     setype=mysqld_etc_t
     selevel=s0
 
+- name: Cheking if mysql is already configured with the password
+  stat:
+    path: "{{ percona_mysql_password_changed }}"
+  register: "percona_mysql_password_changed"
+
+#- debug:
+#    var: percona_mysql_password_changed.stat.exists
+
 - name: Find temporary password from error log on 5.7+
   shell: "grep 'temporary.*root@localhost' /var/log/mysql/error.log | sed 's/.*root@localhost.* //'"
   register: mysql_root_password_temp
@@ -39,21 +47,20 @@
   register: mysql_change_root_password
   ignore_errors: true
   tags: register
-  when: 'percona_mysql_server_version|replace(".","") < "5.7"'
+  when:
+    - 'percona_mysql_server_version|replace(".","") < "5.7"'
+    - "not percona_mysql_password_changed.stat.exists"
 
 - name: Set new root password using ALTER USER syntax for PS57+
   ignore_errors: true
-  shell: 'mysqladmin -u root --password="{{ percona_mysql_root_password.stdout }}" password "{{ mysql_root_password_temp.stdout }}"'
+  shell: 'mysqladmin -u root --password="{{ mysql_root_password_temp.stdout }}" password "{{ percona_mysql_root_password.stdout }}"'
   register: mysql_change_root_password
   tags:
    - register
    - skip_ansible_lint
-  when: 'percona_mysql_server_version|replace(".","") >= "5.7"'
-
-#- debug:
-#    msg: Current value of mysql_change_root_password
-#    var: mysql_change_root_password
-#  when: mysql_change_root_password.stdout != ''
+  when:
+    - 'percona_mysql_server_version|replace(".","") >= "5.7"'
+    - "not percona_mysql_password_changed.stat.exists"
 
 - name: Install root client configuration file in /root/.my.cnf
   template:
@@ -66,6 +73,8 @@
     serole=object_r
     setype=mysqld_etc_t
     selevel=s0
+  when:
+    - "not percona_mysql_password_changed.stat.exists"
 
 - name: Generate local random password that we'll use for {{ percona_mysql_user_name }} @localhost in MySQL
   command: "echo {{ percona_mysql_user_password | default(lookup('password', '/tmp/percona_mysql/' + inventory_hostname + '_percona_mysql_user_password_file length=12 chars=ascii_letters,digits'), true) }}"
@@ -74,6 +83,8 @@
   tags:
     - register
     - skip_ansible_lint
+  when:
+    - percona_mysql_user_name is defined
 
 #- debug:
 #    var: percona_mysql_user_password
@@ -86,7 +97,9 @@
     password={{ percona_mysql_user_password | default(lookup('file', '/tmp/percona_mysql/' + inventory_hostname + '_percona_mysql_user_password_file'), true) }}
     priv={{ percona_mysql_user_priv | default("*.*:ALL,GRANT") }}
     login_unix_socket=/var/run/mysqld/mysqld.sock
-  when: ( ansible_env.HOME  != '/root')
+  when:
+    - ( ansible_env.HOME  != '/root')
+    - percona_mysql_user_name is defined
 
 - name: Install client configuration file .my.cnf in mysql_home_dir / mysql_installation_dir
   template:
@@ -99,7 +112,9 @@
     serole=object_r
     setype=mysqld_etc_t
     selevel=s0
-  when: (ansible_env.USER != 'root')
+  when:
+    - (ansible_env.USER != 'root')
+    - percona_mysql_user_name is defined
 
 - name: remove anonymous users
   mysql_user:
@@ -129,4 +144,9 @@
     name=test
     state=absent
   ignore_errors: true
+
+- name: Remove the passwords tmp directory
+  file:
+      path: /tmp/percona_mysql/
+      state: absent
 ...

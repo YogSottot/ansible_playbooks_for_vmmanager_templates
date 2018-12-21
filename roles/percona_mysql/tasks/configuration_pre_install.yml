@@ -45,11 +45,6 @@
     state: present
   when: user_exist.stdout == '0'
 
-- name: debug task
-  debug:
-    msg: var="{{ user_exist.stdout }}"
-
-
 - name: add mysql user if it doesn't exist
   user:
     name: mysql
