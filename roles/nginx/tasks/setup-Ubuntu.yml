@@ -6,9 +6,12 @@
     update_cache: true
   register: nginx_ppa_added
   when: nginx_ppa_use
+  until: nginx_ppa_added is succeeded
 
 - name: Ensure nginx will reinstall if the PPA was just added.
   apt:
     name: nginx
     state: absent
   when: nginx_ppa_added.changed
+  tags:
+   - skip_ansible_lint

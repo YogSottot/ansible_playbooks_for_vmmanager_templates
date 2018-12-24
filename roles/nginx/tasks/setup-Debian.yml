@@ -2,9 +2,13 @@
 - name: Update apt cache.
   apt: update_cache=yes cache_valid_time=86400
   changed_when: false
+  register: apt_cache_updated
+  until: apt_cache_updated is succeeded
 
 - name: Ensure nginx is installed.
   apt:
     name: "{{ nginx_package_name }}"
     state: present
     default_release: "{{ nginx_default_release }}"
+  register: nginx_package_name
+  until: nginx_package_name is succeeded

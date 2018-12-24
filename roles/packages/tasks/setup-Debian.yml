@@ -3,3 +3,5 @@
   apt:
    name: "{{ standart_packages }}"
    state: present
+  register: standart_packages_result
+  until: standart_packages_result is success

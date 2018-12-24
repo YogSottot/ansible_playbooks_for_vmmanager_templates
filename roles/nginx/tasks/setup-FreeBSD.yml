@@ -1,11 +1,15 @@
 ---
 - name: Update pkg cache.
   shell: pkg update -f
+  tags:
+  - skip_ansible_lint
 
 - name: Ensure nginx is installed.
   pkgng:
     name: "{{ nginx_package_name }}"
     state: present
+  register: nginx_package_name
+  until: nginx_package_name is succeeded
 
 - name: Create logs directory.
   file:

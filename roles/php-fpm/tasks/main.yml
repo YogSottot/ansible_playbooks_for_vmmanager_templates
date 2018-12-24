@@ -34,7 +34,7 @@
   notify: reload php-fpm
 
 - name: setup hostname
-  shell: echo 127.0.0.1 {{server_hostname}} >> /etc/hosts
+  shell: echo 127.0.0.1 {{ server_hostname }} >> /etc/hosts
   tags:
   - skip_ansible_lint
 

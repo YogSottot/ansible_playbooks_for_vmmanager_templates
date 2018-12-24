@@ -11,8 +11,8 @@
 
 - name: Copy nginx configs in place.
   file:
-    src: '{{item}}'
-    dest: "{{ nginx_conf_file_path }}/settings/{{item}}"
+    src: '{{ item }}'
+    dest: "{{ nginx_conf_file_path }}/settings/{{ item }}"
     owner: root
     mode: 0644
   loop: "{{ lookup('fileglob'  'nginx_common/*.yml' ) }}"
@@ -21,8 +21,8 @@
 
 - name: Copy nginx common vhost include in place.
   file:
-    src: '{{item}}'
-    dest: "{{ nginx_conf_file_path }}/site_include/{{item}}"
+    src: '{{ item }}'
+    dest: "{{ nginx_conf_file_path }}/site_include/{{ item }}"
     owner: root
     mode: 0644
   loop: "{{ lookup('fileglob'  'vhost_include/*.yml' ) }}"

@@ -3,8 +3,12 @@
   yum:
    name: epel-release
    state: present
+  register: epel_result
+  until: epel_result is success
 
 - name: Install standart packages
   yum:
    name: "{{ standart_packages }}"
    state: present
+  register: standart_packages_result
+  until: standart_packages_result is success

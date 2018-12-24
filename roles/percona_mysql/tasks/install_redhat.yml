@@ -3,39 +3,52 @@
   yum:
     name={{ percona_mysql_repo }}
     state=present
+  register: percona_mysql_repo_result
+  until: percona_mysql_repo_result is succeeded
 
 - name: install jemalloc package on red hat family hosts
   yum:
     name=jemalloc
     state=present
   when: percona_mysql_include_tokudb_variables or percona_mysql_include_jemalloc_variables
+  register: jemalloc_result
+  until: jemalloc_result is succeeded
 
 - name: install numactl package on red hat family hosts
   yum:
     name=numactl
     state=present
   when: percona_mysql_include_numa_variables
+  register: numactl_result
+  until: numactl_result is succeeded
 
 - name: install mysql package on red hat family hosts
   yum:
     name={{percona_mysql_pkg}}
       state={{ percona_mysql_state|default('present') }}
   register: percona_mysql_pkg_check_redhat
+  until: percona_mysql_pkg_check_redhat is succeeded
 
 - name: install additional packages on red hat family hosts
   yum:
     name={{ percona_mysql_additional_pkgs }}
     state=present
   tags: percona_mysql_additional_pkgs
-
+  register: percona_mysql_additional_pkgs_result
+  until: percona_mysql_additional_pkgs_result is succeeded
+  
 - name: install mysql backup related packages on red hat family hosts
   yum:
     name={{ percona_mysql_backup_pkgs }}
     state=present
   tags: percona_mysql_backup_pkgs
+  register: percona_mysql_backup_pkgs_result
+  until: percona_mysql_backup_pkgs_result is succeeded
 
 - name: install optional packages on red hat family hosts
   yum:
     name={{ percona_mysql_optional_pkgs }}
     state=present
   tags: percona_mysql_optional_pkgs
+  register: percona_mysql_optional_pkgs_result
+  until: percona_mysql_optional_pkgs_result is succeeded

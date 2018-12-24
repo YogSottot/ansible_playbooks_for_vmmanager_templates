@@ -25,7 +25,12 @@
    state: present
 
 - name: Create UMI database user
-  mysql_user: name={{ umi_db_user }} password={{ umi_db_password }} priv={{ umi_db_name }}.*:ALL host='localhost' state=present
+  mysql_user:
+   name: "{{ umi_db_user }}"
+   password: "{{ umi_db_password }}"
+   priv: "{{ umi_db_name }}.*:ALL"
+   host: 'localhost'
+   state: present
 
 - name: Copy UMI config file
   template: src=install.ini.j2 dest={{ site_root }}/install.ini

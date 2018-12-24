@@ -139,4 +139,6 @@
     setype=mysqld_log_t
     selevel=s0
     state=touch
-  when: percona_mysql_error_log_check.stat.exists != true
+  when: percona_mysql_error_log_check.stat.exists
+
+#  when: percona_mysql_error_log_check.stat.exists != true

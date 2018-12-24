@@ -12,6 +12,8 @@
 
 - name: Install Firewalld
   yum: name=firewalld state=present
+  register: firewalld_installed
+  until: firewalld_installed is succeeded
 
 - name: Firewalld service state
   service: name=firewalld state=restarted enabled=yes

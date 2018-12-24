@@ -5,12 +5,11 @@
   roles:
   # - sysctl
   # - packages
-   - percona_mysql
+  # - percona_mysql
   # - role: repo-remi
   #   when: ansible_os_family == 'RedHat'
-  # - php
+   - php
   # - php-versions
-  # - php-fpm
   # - umi-cms
   # - liquidprompt
   # - nginx
@@ -18,3 +17,10 @@
   # - nginx
   # - php-fpm
   tags: initial
+
+#  tags:
+#   - skip_ansible_lint
+
+
+# register: _result
+#  until: _result is succeeded

@@ -25,10 +25,14 @@
       - gmp-devel
     state: present
   when: ansible_os_family == 'RedHat'
+  register: php_dependencies_for_building_from_source_result
+  until: php_dependencies_for_building_from_source_result is succeeded
 
 - name: Update apt cache (Debian).
   apt: update_cache=yes cache_valid_time=86400
   when: ansible_os_family == 'Debian'
+  register: php_update_apt_cache
+  until: php_update_apt_cache is succeeded
 
 - name: Ensure dependencies for building from source are installed (Debian).
   apt:
@@ -55,6 +59,8 @@
       - libssl-dev
     state: present
   when: ansible_os_family == 'Debian'
+  register: php_dependencies_for_building_from_source_result
+  until: php_dependencies_for_building_from_source_result is succeeded
 
 - name: Define php_fpm_daemon (if not defined already).
   set_fact:
@@ -70,13 +76,15 @@
     src: "{{ php_source_install_gmp_path }}"
     dest: /usr/include/gmp.h
     state: link
-  when: gmp_file.stat.exists == false
+  when: not gmp_file.stat.exists
+  #when: gmp_file.stat.exists == false
 
 - name: Check if PHP is installed.
   command: which php
   changed_when: false
   failed_when: false
   register: php_installed
+  until: php_installed is succeeded
 
 - name: Clone the PHP repository.
   git:
@@ -86,6 +94,8 @@
     accept_hostkey: true
     depth: "{{ php_source_clone_depth }}"
   when: php_installed.rc != 0
+  register: php_cloned
+  until: php_cloned is succeeded
 
 - name: Ensure PHP installation path exists.
   file:

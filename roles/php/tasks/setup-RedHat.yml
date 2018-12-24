@@ -5,3 +5,5 @@
     state: "{{ php_packages_state }}"
     enablerepo: "{{ php_enablerepo | default(omit, true) }}"
   notify: restart webserver
+  tags:
+   - skip_ansible_lint

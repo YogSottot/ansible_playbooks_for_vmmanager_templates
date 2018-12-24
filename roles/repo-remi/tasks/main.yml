@@ -3,8 +3,12 @@
   yum:
     name: "{{ remi_repo_url }}"
     state: present
+  register: remi_repo_url_result
+  until: remi_repo_url_result is succeeded
 
 - name: Import remi GPG key.
   rpm_key:
     key: "{{ remi_repo_gpg_key_url }}"
     state: present
+  register: remi_repo_gpg_key_url_result
+  until: remi_repo_gpg_key_url_result is succeeded

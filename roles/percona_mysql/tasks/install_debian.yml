@@ -1,17 +1,22 @@
 ---
 - name: Install dirmngr packages
   apt: pkg=dirmngr state=present
+  register: dirmngr_result
+  until: dirmngr_result is succeeded
 
 - name: install percona server apt-key
   apt_key:
     keyserver="{{ percona_mysql_key_server }}"
     id=9334A25F8507EFA5
     state=present
+  register: percona_mysql_key_server_result
+  until: percona_mysql_key_server_result is succeeded
 
 - name: Add Percona repositories
   apt:
       deb: "https://repo.percona.com/apt/percona-release_0.1-6.{{ansible_distribution_release}}_all.deb"
   register: percona_mysql_apt_repo
+  until: percona_mysql_apt_repo is succeeded
 
 - name: update apt cache
   apt:
@@ -23,6 +28,8 @@
   apt:
     name=libjemalloc1
     state=present
+  register: libjemalloc1_result
+  until: libjemalloc1_result is succeeded
   environment:
     DEBIAN_FRONTEND: noninteractive
   when: percona_mysql_include_tokudb_variables or percona_mysql_include_jemalloc_variables
@@ -34,6 +41,8 @@
   environment:
     DEBIAN_FRONTEND: noninteractive
   when: percona_mysql_include_numa_variables
+  register: numactl_result
+  until: numactl_result is succeeded
 
 - name: install mysql package on debian family hosts
   apt:
@@ -43,6 +52,7 @@
   environment:
     DEBIAN_FRONTEND: noninteractive
   register: percona_mysql_pkg_check_debian
+  until: percona_mysql_pkg_check_debian is succeeded
 
 #- name: create missing directory for Percona packaging
 #  file:
@@ -63,6 +73,8 @@
   environment:
     DEBIAN_FRONTEND: noninteractive
   tags: percona_mysql_additional_pkgs
+  register: percona_mysql_additional_pkgs
+  until: percona_mysql_additional_pkgs is succeeded
 
 - name: install mysql backup related packages on debian family hosts
   apt:
@@ -71,6 +83,8 @@
   environment:
     DEBIAN_FRONTEND: noninteractive
   tags: percona_mysql_backup_pkgs
+  register: percona_mysql_backup_pkgs
+  until: percona_mysql_backup_pkgs is succeeded
 
 - name: install optional packages on debian family hosts
   apt:
@@ -79,3 +93,5 @@
   environment:
     DEBIAN_FRONTEND: noninteractive
   tags: percona_mysql_optional_pkgs
+  register: percona_mysql_optional_pkgs
+  until: percona_mysql_optional_pkgs is succeeded

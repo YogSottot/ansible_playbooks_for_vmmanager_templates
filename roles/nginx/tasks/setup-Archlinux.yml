@@ -3,3 +3,5 @@
   pacman:
     name: "{{ nginx_package_name }}"
     state: present
+  register: nginx_package_name
+  until: nginx_package_name is succeeded
