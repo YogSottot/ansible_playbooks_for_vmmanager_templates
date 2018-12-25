@@ -1,4 +1,34 @@
 ---
 pam_limits_config_file_path: /etc/security/limits.d
 pam_limits_config_file_name: 99-ansible.conf
-pam_limits_config: []
+pam_limits_config: 
+    - filename: 20-nproc.conf
+      parameters:
+      - domain: root
+        type: soft
+        item: nproc
+        value: unlimited
+    - filename: 20-nproc.conf
+      parameters:
+      - domain: "*"
+        type: soft
+        item: nproc
+        value: 65535
+    - filename: 20-nproc.conf
+      parameters:
+      - domain: "*"
+        type: hard
+        item: nproc
+        value: 65535
+    - filename: 20-nproc.conf
+      parameters:
+      - domain: "*"
+        type: soft
+        item: nofile
+        value: 1000000
+    - filename: 20-nproc.conf
+      parameters:
+      - domain: "*"
+        type: hard
+        item: nofile
+        value: 1000000
