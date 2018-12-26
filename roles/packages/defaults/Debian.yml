@@ -1,6 +1,7 @@
 ---
 standart_packages:
  - bash-completion
+ - byobu
  - dnsutils
  - curl
  - gdb

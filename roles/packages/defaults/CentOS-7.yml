@@ -3,6 +3,7 @@ standart_packages:
  - bash-completion
  - bash-completion-extras
  - bind-utils
+ - byobu
  - curl
  - deltarpm
  - gdb
