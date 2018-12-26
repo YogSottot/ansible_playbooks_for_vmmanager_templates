@@ -6,8 +6,10 @@
   register: pam_config_file
 
 - name: Ensure configuration file
-  shell: 'touch {{ pam_limits_config_file_path }}/{{ item.1.filename | default(pam_limits_config_file_name) }}'
-  when: 'not {{ item.0.stat.exists}}'
+  file: 
+    path: "{{ pam_limits_config_file_path }}/{{ item.1.filename | default(pam_limits_config_file_name) }}"
+    state: touch
+  when: "not item.0.stat.exists"
   with_together:
   - '{{ pam_config_file.results }}'
   - '{{ pam_limits_config }}'
