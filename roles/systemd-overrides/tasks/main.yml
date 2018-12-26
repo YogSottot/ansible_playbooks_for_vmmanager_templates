@@ -1,0 +1,4 @@
+---
+- include: config.yml
+  tags: pam_limits_config
+  when: "ansible_service_mgr == 'systemd'"
