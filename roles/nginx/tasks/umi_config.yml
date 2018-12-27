@@ -1,42 +1,38 @@
 ---
-# UMI common setup.
-- name: Copy nginx configuration in place.
+- name: Copy nginx UMI common configuration in place.
   template:
     src: umi_common.conf.j2
-    dest: "{{ nginx_conf_file_path }}/site_include/umi_common.conf"
+    dest: "{{ nginx_conf_files_path }}/site_include/umi_common.conf"
     owner: root
     group: "{{ root_group }}"
     mode: 0644
   notify:
     - reload nginx
 
-# UMI default vhost setup.
-- name: Copy nginx configuration in place.
+- name: Copy nginx UMI site configuration in place.
   template:
     src: umi_site.conf.j2
-    dest: "{{ nginx_conf_file_path }}/site_avaliable/umi_site.conf"
+    dest: "{{ nginx_conf_files_path }}/site_avaliable/umi_site.conf"
     owner: root
     group: "{{ root_group }}"
     mode: 0644
   notify:
     - reload nginx
 
-# UMI default vhost setup.
-- name: Copy nginx configuration in place.
+- name: Copy nginx UMI site ssl configuration in place.
   template:
     src: umi_site_ssl.conf.j2
-    dest: "{{ nginx_conf_file_path }}/site_avaliable/umi_site_ssl.conf"
+    dest: "{{ nginx_conf_files_path }}/site_avaliable/umi_site_ssl.conf"
     owner: root
     group: "{{ root_group }}"
     mode: 0644
   notify:
     - reload nginx
 
-# UMI enable default vhost setup.
-- name: Copy nginx configuration in place.
-  template:
-    src: "{{ nginx_conf_file_path }}/site_avaliable/umi_site.conf"
-    dest: "{{ nginx_conf_file_path }}/site_enabled/umi_site.conf"
+- name: UMI enable default vhost setup.
+  file:
+    src: "{{ nginx_conf_files_path }}/site_avaliable/umi_site.conf"
+    dest: "{{ nginx_conf_files_path }}/site_enabled/umi_site.conf"
     owner: root
     group: "{{ root_group }}"
     mode: 0644
@@ -44,11 +40,10 @@
   notify:
     - reload nginx
 
-# UMI enable default vhost setup.
-- name: Copy nginx configuration in place.
-  template:
-    src: "{{ nginx_conf_file_path }}/site_avaliable/umi_site_ssl.conf"
-    dest: "{{ nginx_conf_file_path }}/site_enabled/umi_site_ssl.conf"
+- name: UMI enable default ssl vhost setup.
+  file:
+    src: "{{ nginx_conf_files_path }}/site_avaliable/umi_site_ssl.conf"
+    dest: "{{ nginx_conf_files_path }}/site_enabled/umi_site_ssl.conf"
     owner: root
     group: "{{ root_group }}"
     mode: 0644

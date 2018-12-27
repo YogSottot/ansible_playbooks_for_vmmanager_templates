@@ -24,7 +24,7 @@
 
 - name: install mysql package on red hat family hosts
   yum:
-    name={{percona_mysql_pkg}}
+    name={{ percona_mysql_pkg }}
       state={{ percona_mysql_state|default('present') }}
   register: percona_mysql_pkg_check_redhat
   until: percona_mysql_pkg_check_redhat is succeeded
@@ -36,7 +36,7 @@
   tags: percona_mysql_additional_pkgs
   register: percona_mysql_additional_pkgs_result
   until: percona_mysql_additional_pkgs_result is succeeded
-  
+
 - name: install mysql backup related packages on red hat family hosts
   yum:
     name={{ percona_mysql_backup_pkgs }}

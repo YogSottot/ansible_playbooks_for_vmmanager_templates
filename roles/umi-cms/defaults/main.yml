@@ -1,6 +1,6 @@
 ---
 site_user: user
-site_domain: "{{ server_hostname }}"
+site_domain: "{{ ansible_fqdn }}"
 site_root: "/home/{{ site_user }}/public_html/{{ site_domain }}"
 umi_db_name: umicms
 umi_db_user: umicms

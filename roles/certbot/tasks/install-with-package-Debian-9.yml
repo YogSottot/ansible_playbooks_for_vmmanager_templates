@@ -1,7 +1,9 @@
 ---
-- apt_repository:
-    repo: stretch-backports
-
+- name: Add backports repo
+  apt_repository:
+    repo: "deb http://mirror.yandex.ru/debian {{ ansible_distribution_release }}-backports main contrib non-free"
+    update_cache: yes
+    
 - name: Install Certbot.
   package: "name={{ certbot_package }} state=present"
 

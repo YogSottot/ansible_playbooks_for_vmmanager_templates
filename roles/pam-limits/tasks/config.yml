@@ -6,7 +6,7 @@
   register: pam_config_file
 
 - name: Ensure configuration file
-  file: 
+  file:
     path: "{{ pam_limits_config_file_path }}/{{ item.1.filename | default(pam_limits_config_file_name) }}"
     state: touch
   when: "not item.0.stat.exists"

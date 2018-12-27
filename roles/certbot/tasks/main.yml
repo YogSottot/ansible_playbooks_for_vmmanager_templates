@@ -4,17 +4,66 @@
 - include_tasks: "{{ item }}"
   with_first_found:
     - "install-with-package-{{ ansible_distribution }}-{{ ansible_distribution_version }}.yml"
+    - "install-with-package-{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml"
     - "install-with-package-{{ ansible_distribution }}.yml"
     - "install-with-package-{{ ansible_os_family }}.yml"
     - "install-with-package.yml"
 
+- name: Check A record (IPV4 address) for {{ ansible_fqdn }}
+  shell: "dig {{ ansible_fqdn }} +short"
+  register: certbot_ansible_fqdn_dns_record
+  tags:
+   - skip_ansible_lint
+
+- name: Check A record (IPV4 address) for www.{{ ansible_fqdn }}
+  shell: "dig www.{{ ansible_fqdn }} +short"
+  register: certbot_ansible_fqdn_www_dns_record
+  tags:
+   - skip_ansible_lint
+
+#- name: Check A record (IPV4 address) for {{ ansible_fqdn }}
+#  debug: msg="{{ lookup('dig', '{{ ansible_fqdn }}.')}}"
+#  register: certbot_ansible_fqdn_dns_record
+
+#- name: Check A record (IPV4 address) for www.{{ ansible_fqdn }}
+#  debug: msg="{{ lookup('dig', 'www.{{ ansible_fqdn }}.')}}"
+#  register: certbot_ansible_fqdn_www_dns_record
+
 - name: generate cert
-  command: "{{ certbot_script }} --agree-tos --register-unsafely-without-email --staple-ocsp --webroot certonly -w /opt/letsencrypt -d {{ server_hostname }} -d  www.{{ server_hostname }} creates=/etc/letsencrypt/live/{{ server_hostname }}/chain.pem"
+  command: >
+        {{ certbot_script }} --agree-tos --register-unsafely-without-email
+            --staple-ocsp --webroot certonly -w /opt/letsencrypt
+            -d {{ ansible_fqdn }} -d  www.{{ ansible_fqdn }}
+  args:
+    creates: "/etc/letsencrypt/live/{{ ansible_fqdn }}/chain.pem"
   notify:
     - nginx reload
   ignore_errors: yes
+  when:
+    - "'certbot_ansible_fqdn_dns_record.stdout' in 'ansible_all_ipv4_addresses'"
+    - "'certbot_ansible_fqdn_www_dns_record.stdout' in 'ansible_all_ipv4_addresses'"
+  register: certbot_generate_cert
+#  tags:
+#  - skip_ansible_lint
+
+- name: generate cert
+  command: >
+        {{ certbot_script }} --agree-tos --register-unsafely-without-email
+             --staple-ocsp --webroot certonly -w /opt/letsencrypt
+             -d {{ ansible_fqdn }}
+  args:
+    creates: "/etc/letsencrypt/live/{{ ansible_fqdn }}/chain.pem"
+  notify:
+    - nginx reload
+  ignore_errors: yes
+  register: certbot_generate_cert2
+  when:
+    - "'certbot_ansible_fqdn_dns_record' in 'ansible_all_ipv4_addresses'"
+    - "'certbot_ansible_fqdn_www_dns_record' not in 'ansible_all_ipv4_addresses'"
   tags:
   - skip_ansible_lint
 
 - import_tasks: renew-cron.yml
-  when: certbot_auto_renew
+  when:
+    - certbot_auto_renew
+    - certbot_generate_cert == 'succes' or certbot_generate_cert2 == 'succes'

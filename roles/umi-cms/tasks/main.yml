@@ -9,13 +9,13 @@
    group: "{{ site_user }}"
    home: "/home/{{ site_user }}"
 
-- name: Make override dir for service nginx
+- name: Make UMI site dir
   file:
    path: "{{ site_root }}"
    state: directory
 
 - name: Copy UMI install file
-  file:
+  copy:
    src: install.php
    dest: "{{ site_root }}/install.php"
 
@@ -38,8 +38,9 @@
 - name: Change ownership of UMI installation
   file: path={{ site_root }} owner={{ site_user }} group={{ site_user }} state=directory recurse=yes
 
-- name: Add cron task
+- name: Add UMI cron task
   cron:
+   name: UMI cron task.
    user: "{{ site_user }}"
    job: "test -f {{ site_root }}/cron.php && { /usr/bin/php -f {{ site_root }}/cron.php; } >/dev/null 2>&1"
 

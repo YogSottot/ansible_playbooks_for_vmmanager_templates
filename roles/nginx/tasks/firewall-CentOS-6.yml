@@ -1,0 +1,21 @@
+---
+- name: insert firewall rule for nginx
+  iptables:
+    action: insert
+    rule_num: 2
+    chain: INPUT
+    protocol: tcp
+    destination_port: "{{ nginx_http_port }}"
+    jump: ACCEPT
+    
+- name: insert firewall https rule for nginx
+  iptables:
+    action: insert
+    rule_num: 3
+    chain: INPUT
+    protocol: tcp
+    destination_port: "{{ nginx_https_port }}"
+    jump: ACCEPT
+
+- name: save iptables
+  command: service iptables save warn=False

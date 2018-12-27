@@ -7,12 +7,12 @@
     group: 'root'
     mode: '0755'
   with_items:
-    - "{{ nginx_conf_file_path }}/map"
-    - "{{ nginx_conf_file_path }}/settings"
-    - "{{ nginx_conf_file_path }}/site_avaliable"
-    - "{{ nginx_conf_file_path }}/site_enabled"
-    - "{{ nginx_conf_file_path }}/site_include"
-    - "{{ nginx_conf_file_path }}/ssl"
+    - "{{ nginx_conf_files_path }}/map"
+    - "{{ nginx_conf_files_path }}/settings"
+    - "{{ nginx_conf_files_path }}/site_avaliable"
+    - "{{ nginx_conf_files_path }}/site_enabled"
+    - "{{ nginx_conf_files_path }}/site_include"
+    - "{{ nginx_conf_files_path }}/ssl"
 
 - name: Add letsencrypt dir
   file:

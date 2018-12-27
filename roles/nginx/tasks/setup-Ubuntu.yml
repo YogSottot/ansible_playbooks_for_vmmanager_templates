@@ -15,3 +15,10 @@
   when: nginx_ppa_added.changed
   tags:
    - skip_ansible_lint
+
+- name: Ensure pyOpenSSL is installed.
+  apt:
+    name: python-openssl
+    state: present
+  register: nginx_pyopenssl
+  until: nginx_pyopenssl is succeeded

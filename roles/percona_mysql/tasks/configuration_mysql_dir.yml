@@ -110,7 +110,10 @@
 #    group=root
 #    mode=0644
 #  register: percona_mysql_apparmor
-#  when: ansible_os_family == 'Debian' and (percona_mysql_apparmor_check.stat.isdir is defined and percona_mysql_apparmor_check.isdir)
+#  when:
+#   - "ansible_os_family == 'Debian'"
+#   - "percona_mysql_apparmor_check.stat.isdir is defined"
+#   - "percona_mysql_apparmor_check.isdir"
 #  tags: percona_mysql_manage_security
 
 #- name: reload apparmor service if the local usr.sbin.mysqld has changed
@@ -139,6 +142,4 @@
     setype=mysqld_log_t
     selevel=s0
     state=touch
-  when: percona_mysql_error_log_check.stat.exists
-
-#  when: percona_mysql_error_log_check.stat.exists != true
+  when: not percona_mysql_error_log_check.stat.exists

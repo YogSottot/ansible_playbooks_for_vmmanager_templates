@@ -1,0 +1,7 @@
+---
+# PyOpenSSl > 0.15
+- name: Generate self-signed SSL certificates
+  command: openssl req -x509 -newkey rsa:2048 -keyout default.key -out default.pem -nodes -subj '/CN=localhost'
+  args:
+    chdir: /etc/nginx/ssl/
+    creates: /etc/nginx/ssl/default.pem

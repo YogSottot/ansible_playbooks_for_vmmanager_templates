@@ -12,3 +12,10 @@
     default_release: "{{ nginx_default_release }}"
   register: nginx_package_name
   until: nginx_package_name is succeeded
+
+- name: Ensure pyOpenSSL is installed.
+  apt:
+    name: python-openssl
+    state: present
+  register: nginx_pyopenssl
+  until: nginx_pyopenssl is succeeded

@@ -21,7 +21,10 @@
 
 - name: Fail if TokuDB is partially installed
   fail: msg='It looks like TokuDB is already partially installed, please investigate and resolve manually'
-  when: percona_mysql_include_tokudb_variables and percona_mysql_tokudb_enabled.stdout|int > 0 and percona_mysql_tokudb_enabled.stdout|int < 7
+  when:
+    - "percona_mysql_include_tokudb_variables"
+    - "percona_mysql_tokudb_enabled.stdout|int > '0'"
+    - "percona_mysql_tokudb_enabled.stdout|int < '7'"
   tags: percona_mysql_tokudb_prereq
 
 - name: Check whether Transparent HugePages are enabled for this session

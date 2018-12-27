@@ -53,7 +53,9 @@
 - name: optionally execute mysql_upgrade after an upgrade has been performed
   command:
     mysql_upgrade --skip-write-binlog
-  when: percona_mysql_check_upgrade and (percona_mysql_pkg_check_redhat.changed or percona_mysql_pkg_check_debian.changed)
+  when:
+    - "percona_mysql_check_upgrade"
+    - "percona_mysql_pkg_check_redhat.changed or percona_mysql_pkg_check_debian.changed"
   tags: skip_ansible_lint
 
 #- name: ensure percona database exists

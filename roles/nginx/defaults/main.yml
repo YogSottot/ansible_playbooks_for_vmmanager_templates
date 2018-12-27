@@ -1,6 +1,6 @@
 ---
 nginx_user: user
-site_domain: "{{ server_hostname }}"
+site_domain: "{{ ansible_fqdn }}"
 nginx_site_root: "/home/{{ nginx_user }}/public_html/{{ site_domain }}"
 nginx_http_port: 80
 nginx_https_port: 443

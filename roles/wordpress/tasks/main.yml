@@ -9,7 +9,7 @@
    group: "{{ site_user }}"
    home: "/home/{{ site_user }}"
 
-- name: Make override dir for service nginx
+- name: Make wordpress site dir
   file:
    path: "{{ site_root }}"
    state: directory

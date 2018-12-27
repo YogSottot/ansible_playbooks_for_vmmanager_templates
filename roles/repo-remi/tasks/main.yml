@@ -17,6 +17,8 @@
   yum:
     name: epel-release
     state: present
+  register: epel_release_result
+  until: epel_release_result is succeeded
 
 - name: Enable remi-php{{ remi_repo_php_version }} repo
   ini_file:

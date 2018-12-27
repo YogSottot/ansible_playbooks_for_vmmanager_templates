@@ -77,7 +77,6 @@
     dest: /usr/include/gmp.h
     state: link
   when: not gmp_file.stat.exists
-  #when: gmp_file.stat.exists == false
 
 - name: Check if PHP is installed.
   command: which php

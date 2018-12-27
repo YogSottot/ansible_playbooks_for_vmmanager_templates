@@ -4,7 +4,7 @@
     dest: "{{ systemd_overrides_config_file_path }}/{{ item }}.service.d/"
     state: directory
   loop: "{{ systemd_overrides_unit }}"
-   
+
 - name: Ensure configuration
   template:
     dest: "{{ systemd_overrides_config_file_path }}/{{ item }}.service.d/z_override.conf"

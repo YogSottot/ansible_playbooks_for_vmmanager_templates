@@ -1,0 +1,23 @@
+---
+# Setup ufw
+- name: Install ufw
+  yum: name=ufw state=present
+  register: ufw_installed
+  until: ufw_installed is succeeded
+
+- name: ufw service state
+  service: name=ufw state=restarted enabled=yes
+
+- name: insert ufw rule for nginx
+  ufw:
+    rule: allow
+    name: Nginx Full
+
+- name: insert ufw rule for OpenSSH
+  ufw:
+    rule: allow
+    name: OpenSSH
+
+- name: enable ufw
+  ufw:
+    state: enabled
