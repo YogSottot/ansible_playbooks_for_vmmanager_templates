@@ -9,17 +9,33 @@
     - "install-with-package-{{ ansible_os_family }}.yml"
     - "install-with-package.yml"
 
-- name: Check A record (IPV4 address) for {{ ansible_fqdn }}
+- name: Check A record (IPV4 address) for non-www hostname
   shell: "dig {{ ansible_fqdn }} +short"
   register: certbot_ansible_fqdn_dns_record
   tags:
    - skip_ansible_lint
 
-- name: Check A record (IPV4 address) for www.{{ ansible_fqdn }}
+- name: Check A record (IPV4 address) for www hostname
   shell: "dig www.{{ ansible_fqdn }} +short"
   register: certbot_ansible_fqdn_www_dns_record
   tags:
    - skip_ansible_lint
+
+- name: debug
+  debug:
+    msg: "{{ certbot_ansible_fqdn_dns_record }}"
+
+- name: debug.stdout
+  debug:
+    msg: "{{ certbot_ansible_fqdn_dns_record.stdout }}"
+
+- name: debug www.stdout
+  debug:
+    msg: "{{ certbot_ansible_fqdn_www_dns_record.stdout }}"
+
+- name: debug ansible_all_ipv4
+  debug:
+    msg: "{{ ansible_all_ipv4_addresses }}"
 
 #- name: Check A record (IPV4 address) for {{ ansible_fqdn }}
 #  debug: msg="{{ lookup('dig', '{{ ansible_fqdn }}.')}}"
@@ -29,7 +45,7 @@
 #  debug: msg="{{ lookup('dig', 'www.{{ ansible_fqdn }}.')}}"
 #  register: certbot_ansible_fqdn_www_dns_record
 
-- name: generate cert
+- name: generate www cert
   command: >
         {{ certbot_script }} --agree-tos --register-unsafely-without-email
             --staple-ocsp --webroot certonly -w /opt/letsencrypt
@@ -46,7 +62,7 @@
 #  tags:
 #  - skip_ansible_lint
 
-- name: generate cert
+- name: generate non-www cert
   command: >
         {{ certbot_script }} --agree-tos --register-unsafely-without-email
              --staple-ocsp --webroot certonly -w /opt/letsencrypt
@@ -58,8 +74,8 @@
   ignore_errors: yes
   register: certbot_generate_cert2
   when:
-    - "'certbot_ansible_fqdn_dns_record' in 'ansible_all_ipv4_addresses'"
-    - "'certbot_ansible_fqdn_www_dns_record' not in 'ansible_all_ipv4_addresses'"
+    - "'certbot_ansible_fqdn_dns_record.stdout' in 'ansible_all_ipv4_addresses'"
+    - "'certbot_ansible_fqdn_www_dns_record.stdout' not in 'ansible_all_ipv4_addresses'"
   tags:
   - skip_ansible_lint
 

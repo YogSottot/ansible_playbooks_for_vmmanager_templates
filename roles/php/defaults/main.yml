@@ -20,12 +20,12 @@ php_enable_webserver: false
 
 # PHP-FPM configuration.
 php_enable_php_fpm: true
-php_fpm_listen: "127.0.0.1:9000"
+php_fpm_listen: "{{ __php_fpm_socket_path }}/{{ nginx_user }}.sock"
 php_fpm_listen_allowed_clients: "127.0.0.1"
 php_fpm_pm_max_children: 10
 php_fpm_pm_start_servers: 5
-php_fpm_pm_min_spare_servers: 5
-php_fpm_pm_max_spare_servers: 5
+php_fpm_pm_min_spare_servers: 1
+php_fpm_pm_max_spare_servers: 10
 
 # The executable to run when calling PHP from the command line.
 php_executable: "php"
