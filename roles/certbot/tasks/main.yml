@@ -33,9 +33,9 @@
   debug:
     msg: "{{ certbot_ansible_fqdn_www_dns_record.stdout }}"
 
-- name: debug ansible_all_ipv4
+- name: debug ansible_default_ipv4.address
   debug:
-    msg: "{{ ansible_all_ipv4_addresses }}"
+    msg: "{{ ansible_default_ipv4.address }}"
 
 #- name: Check A record (IPV4 address) for {{ ansible_fqdn }}
 #  debug: msg="{{ lookup('dig', '{{ ansible_fqdn }}.')}}"
@@ -56,8 +56,10 @@
     - nginx reload
   ignore_errors: yes
   when:
-    - "'certbot_ansible_fqdn_dns_record.stdout' in 'ansible_all_ipv4_addresses'"
-    - "'certbot_ansible_fqdn_www_dns_record.stdout' in 'ansible_all_ipv4_addresses'"
+    - "'certbot_ansible_fqdn_dns_record.stdout' == 'ansible_default_ipv4.address'"
+    - "'certbot_ansible_fqdn_www_dns_record.stdout' == 'ansible_default_ipv4.address')"
+    #- "'certbot_ansible_fqdn_dns_record.stdout' is subset('ansible_all_ipv4_addresses')"
+    #- "'certbot_ansible_fqdn_www_dns_record.stdout' is subset('ansible_all_ipv4_addresses')"
   register: certbot_generate_cert
 #  tags:
 #  - skip_ansible_lint
@@ -74,12 +76,14 @@
   ignore_errors: yes
   register: certbot_generate_cert2
   when:
-    - "'certbot_ansible_fqdn_dns_record.stdout' in 'ansible_all_ipv4_addresses'"
-    - "'certbot_ansible_fqdn_www_dns_record.stdout' not in 'ansible_all_ipv4_addresses'"
+    - "'certbot_ansible_fqdn_dns_record.stdout' == 'ansible_default_ipv4.address'"
+    - "'certbot_ansible_fqdn_www_dns_record.stdout' != 'ansible_default_ipv4.address')"
+    #- "'certbot_ansible_fqdn_dns_record.stdout' is subset('ansible_all_ipv4_addresses')"
+    #- "not 'certbot_ansible_fqdn_www_dns_record.stdout' is subset('ansible_all_ipv4_addresses')"
   tags:
   - skip_ansible_lint
 
 - import_tasks: renew-cron.yml
   when:
     - certbot_auto_renew
-    - certbot_generate_cert == 'succes' or certbot_generate_cert2 == 'succes'
+    - certbot_generate_cert == 'succeeded' or certbot_generate_cert2 == 'succeeded'
