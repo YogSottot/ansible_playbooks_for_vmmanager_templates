@@ -3,20 +3,19 @@
 - hosts: umi-cms
   become: yes
   roles:
-    #- pam-limits
-    #- systemd-overrides
-    #- sysctl
-    #- packages
-    #- percona_mysql
-    #- role: repo-remi
-    #  when: ansible_os_family == 'RedHat'
-    #- php
-    #- umi-cms
-    #- liquidprompt
-    #- nginx
+    - pam-limits
+    - systemd-overrides
+    - sysctl
+    - packages
+    - percona_mysql
+    - role: repo-remi
+      when: ansible_os_family == 'RedHat'
+    - umi-cms
+    - php
+    - liquidprompt
+    - nginx
     - certbot
     - nginx
-    #- php-fpm
   tags: initial
 
 #  tags:

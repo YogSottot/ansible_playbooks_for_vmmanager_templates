@@ -21,21 +21,21 @@
   tags:
    - skip_ansible_lint
 
-- name: debug
-  debug:
-    msg: "{{ certbot_ansible_fqdn_dns_record }}"
+#- name: debug
+#  debug:
+#    msg: "{{ certbot_ansible_fqdn_dns_record }}"
 
-- name: debug.stdout
-  debug:
-    msg: "{{ certbot_ansible_fqdn_dns_record.stdout }}"
+#- name: debug.stdout
+#  debug:
+#    msg: "{{ certbot_ansible_fqdn_dns_record.stdout }}"
 
-- name: debug www.stdout
-  debug:
-    msg: "{{ certbot_ansible_fqdn_www_dns_record.stdout }}"
+#- name: debug www.stdout
+#  debug:
+#    msg: "{{ certbot_ansible_fqdn_www_dns_record.stdout }}"
 
-- name: debug ansible_default_ipv4.address
-  debug:
-    msg: "{{ ansible_default_ipv4.address }}"
+#- name: debug ansible_default_ipv4.address
+#  debug:
+#    msg: "{{ ansible_default_ipv4.address }}"
 
 #- name: Check A record (IPV4 address) for {{ ansible_fqdn }}
 #  debug: msg="{{ lookup('dig', '{{ ansible_fqdn }}.')}}"
@@ -56,8 +56,8 @@
     - nginx reload
   ignore_errors: yes
   when:
-    - "'certbot_ansible_fqdn_dns_record.stdout' == 'ansible_default_ipv4.address'"
-    - "'certbot_ansible_fqdn_www_dns_record.stdout' == 'ansible_default_ipv4.address')"
+    - "certbot_ansible_fqdn_dns_record.stdout == ansible_default_ipv4.address"
+    - "certbot_ansible_fqdn_www_dns_record.stdout == ansible_default_ipv4.address"
     #- "'certbot_ansible_fqdn_dns_record.stdout' is subset('ansible_all_ipv4_addresses')"
     #- "'certbot_ansible_fqdn_www_dns_record.stdout' is subset('ansible_all_ipv4_addresses')"
   register: certbot_generate_cert
@@ -76,8 +76,8 @@
   ignore_errors: yes
   register: certbot_generate_cert2
   when:
-    - "'certbot_ansible_fqdn_dns_record.stdout' == 'ansible_default_ipv4.address'"
-    - "'certbot_ansible_fqdn_www_dns_record.stdout' != 'ansible_default_ipv4.address')"
+    - "certbot_ansible_fqdn_dns_record.stdout == ansible_default_ipv4.address"
+    - "certbot_ansible_fqdn_www_dns_record.stdout != ansible_default_ipv4.address"
     #- "'certbot_ansible_fqdn_dns_record.stdout' is subset('ansible_all_ipv4_addresses')"
     #- "not 'certbot_ansible_fqdn_www_dns_record.stdout' is subset('ansible_all_ipv4_addresses')"
   tags:
