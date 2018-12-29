@@ -12,8 +12,10 @@ __php_packages:
   - php{{ php_default_version_debian }}-opcache
   - php{{ php_default_version_debian }}-xml
   - php{{ php_default_version_debian }}-mbstring
-  - php-sqlite3
+  - php{{ php_default_version_debian }}-mysqli
   - php-apcu
+  - php-imagick
+  - php-sqlite3
 __php_webserver_daemon: "apache2"
 
 # Vendor-specific configuration paths on Debian/Ubuntu make my brain asplode.
