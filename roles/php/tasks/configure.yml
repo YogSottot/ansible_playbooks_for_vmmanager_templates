@@ -18,3 +18,19 @@
   with_items: "{{ php_conf_paths }}"
   notify: restart webserver
   when: php_use_managed_ini
+
+- name: Make PHP upload_tmp_dir.
+  file:
+    path: "{{ php_upload_tmp_dir }}"
+    owner: "{{ site_user }}"
+    group: "{{ site_user }}"
+    mode: 0644
+    state: directory
+
+- name: Make PHP php_session_save_path.
+  file:
+    path: "{{ php_session_save_path }}"
+    owner: "{{ site_user }}"
+    group: "{{ site_user }}"
+    mode: 0644
+    state: directory

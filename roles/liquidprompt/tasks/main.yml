@@ -35,12 +35,12 @@
 #    mode: 0600
 
 - name: Add some options to root bashrc
-  blockinfile: 
+  blockinfile:
       path: /root/.bashrc
       backup: yes
       owner: root
       mode: 0600
-      block: | 
+      block: |
             if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
                 . /etc/bash_completion
             fi
@@ -63,12 +63,12 @@
       owner: "{{ site_user }}"
 
 - name: Add some options to user's bashrc
-  blockinfile: 
+  blockinfile:
       path: "/home/{{ site_user }}/.bashrc"
       backup: yes
       owner: "{{ site_user }}"
       mode: 0600
-      block: | 
+      block: |
             alias mc='mc -x'
             [[ $- = *i* ]] && source /opt/liquidprompt/liquidprompt
       state: present
