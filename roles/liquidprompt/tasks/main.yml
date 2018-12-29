@@ -26,13 +26,29 @@
     group: root
     mode: 0600
 
-- name: copy bashrc
-  copy:
-    src: bashrc
-    dest: /root/.bashrc
-    owner: root
-    group: root
-    mode: 0600
+#- name: copy bashrc
+#  copy:
+#    src: bashrc
+#    dest: /root/.bashrc
+#    owner: root
+#    group: root
+#    mode: 0600
+
+- name: Add some options to root bashrc
+  blockinfile: 
+      path: /root/.bashrc
+      backup: yes
+      owner: root
+      mode: 0600
+      block: | 
+            if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
+                . /etc/bash_completion
+            fi
+            alias mc='mc -x'
+            alias mytuner='/usr/local/bin/mysqltuner.pl'
+            alias myprimer='/usr/local/bin/tuning-primer.sh'
+            [[ $- = *i* ]] && source /opt/liquidprompt/liquidprompt
+      state: present
 
 - name: Creates user config directory
   file:
@@ -46,12 +62,23 @@
       dest: "/home/{{ site_user }}/.config/liquidpromptrc"
       owner: "{{ site_user }}"
 
-- name: Copy bashrc for user
-  copy:
-      src: bashrc_user
-      dest: "/home/{{ site_user }}/.bashrc"
+- name: Add some options to user's bashrc
+  blockinfile: 
+      path: "/home/{{ site_user }}/.bashrc"
+      backup: yes
       owner: "{{ site_user }}"
       mode: 0600
+      block: | 
+            alias mc='mc -x'
+            [[ $- = *i* ]] && source /opt/liquidprompt/liquidprompt
+      state: present
+
+#- name: Copy bashrc for user
+#  copy:
+#      src: bashrc_user
+#      dest: "/home/{{ site_user }}/.bashrc"
+#      owner: "{{ site_user }}"
+#      mode: 0600
 
 - name: Copy tuning-primer.sh
   copy:

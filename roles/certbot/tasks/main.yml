@@ -38,11 +38,11 @@
 #    msg: "{{ ansible_default_ipv4.address }}"
 
 #- name: Check A record (IPV4 address) for {{ ansible_fqdn }}
-#  debug: msg="{{ lookup('dig', '{{ ansible_fqdn }}.')}}"
+#  debug: msg="{{ lookup('dig', '{{ ansible_fqdn }}.') }}"
 #  register: certbot_ansible_fqdn_dns_record
 
 #- name: Check A record (IPV4 address) for www.{{ ansible_fqdn }}
-#  debug: msg="{{ lookup('dig', 'www.{{ ansible_fqdn }}.')}}"
+#  debug: msg="{{ lookup('dig', 'www.{{ ansible_fqdn }}.') }}"
 #  register: certbot_ansible_fqdn_www_dns_record
 
 - name: generate www cert
