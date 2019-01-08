@@ -1,7 +1,7 @@
 ---
 - name: Creates config directory
   file:
-    path: /root/.config/
+    path: /root/.config/htop
     state: directory
 
 - name: Creates liquidprompt directory
@@ -22,6 +22,14 @@
   copy:
     src: liquidpromptrc
     dest: /root/.config/liquidpromptrc
+    owner: root
+    group: root
+    mode: 0600
+
+- name: copy htoprc
+  copy:
+    src: htoprc
+    dest: /root/.config/htop/htoprc
     owner: root
     group: root
     mode: 0600
@@ -52,7 +60,7 @@
 
 - name: Creates user config directory
   file:
-      path: "/home/{{ site_user }}/.config/"
+      path: "/home/{{ site_user }}/.config/htop"
       state: directory
       owner: "{{ site_user }}"
 
@@ -60,6 +68,12 @@
   copy:
       src: liquidpromptrc
       dest: "/home/{{ site_user }}/.config/liquidpromptrc"
+      owner: "{{ site_user }}"
+
+- name: Copy htoprc for user
+  copy:
+      src: htoprc
+      dest: "/home/{{ site_user }}/.config/htop/htoprc"
       owner: "{{ site_user }}"
 
 - name: Add some options to user's bashrc
