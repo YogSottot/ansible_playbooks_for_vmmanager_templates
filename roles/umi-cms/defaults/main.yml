@@ -1,7 +1,7 @@
 ---
 site_user: user
 site_domain: "{{ ansible_fqdn }}"
-site_root: "/home/{{ site_user }}/public_html/{{ site_domain }}"
+site_root: "/home/{{ site_user }}/www/{{ site_domain }}/public_html"
 umi_db_name: umicms
 umi_db_user: umicms
 umi_db_password: "{{ lookup('password', '/tmp/mysqlpasswordfile_umi length=15') }}"

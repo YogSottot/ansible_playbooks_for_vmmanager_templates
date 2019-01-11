@@ -19,6 +19,11 @@
    src: install.php
    dest: "{{ site_root }}/install.php"
 
+- name: Copy UMI index file
+  copy:
+   src: index.php
+   dest: "{{ site_root }}/index.php"
+
 - name: Create UMI database
   mysql_db:
    name: "{{ umi_db_name }}"

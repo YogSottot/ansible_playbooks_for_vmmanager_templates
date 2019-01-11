@@ -2,6 +2,7 @@
 # playbook.yml file.
 - hosts: umi-cms
   become: yes
+  become_method: su
   roles:
     - pam-limits
     - systemd-overrides
