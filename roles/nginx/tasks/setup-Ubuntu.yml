@@ -8,13 +8,18 @@
   when: nginx_ppa_use
   until: nginx_ppa_added is succeeded
 
+- name: Update apt cache.
+  apt: update_cache=yes cache_valid_time=86400
+  changed_when: false
+  register: apt_cache_updated
+  until: apt_cache_updated is succeeded
+
 - name: Ensure nginx will reinstall if the PPA was just added.
   apt:
     name: nginx
-    state: absent
-  when: nginx_ppa_added.changed
-  tags:
-   - skip_ansible_lint
+    state: present
+  register: nginx_package_name
+  until: nginx_package_name is succeeded
 
 - name: Ensure pyOpenSSL is installed.
   apt:
