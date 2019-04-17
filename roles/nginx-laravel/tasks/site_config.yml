@@ -1,0 +1,52 @@
+---
+- name: Copy nginx laravel common configuration in place.
+  template:
+    src: laravel.conf.j2
+    dest: "{{ nginx_conf_files_path }}/site_include/laravel.conf"
+    owner: root
+    group: "{{ root_group }}"
+    mode: 0644
+  notify:
+    - reload nginx
+
+- name: Copy nginx site configuration in place.
+  template:
+    src: site.conf.j2
+    dest: "{{ nginx_conf_files_path }}/site_avaliable/site.conf"
+    owner: root
+    group: "{{ root_group }}"
+    mode: 0644
+  notify:
+    - reload nginx
+
+- name: Copy nginx site ssl configuration in place.
+  template:
+    src: site_ssl.conf.j2
+    dest: "{{ nginx_conf_files_path }}/site_avaliable/site_ssl.conf"
+    owner: root
+    group: "{{ root_group }}"
+    mode: 0644
+  notify:
+    - reload nginx
+
+- name: enable default vhost setup.
+  file:
+    src: "{{ nginx_conf_files_path }}/site_avaliable/site.conf"
+    dest: "{{ nginx_conf_files_path }}/site_enabled/site.conf"
+    owner: root
+    group: "{{ root_group }}"
+    mode: 0644
+    state: link
+  notify:
+    - reload nginx
+
+- name: enable default ssl vhost setup.
+  file:
+    src: "{{ nginx_conf_files_path }}/site_avaliable/site_ssl.conf"
+    dest: "{{ nginx_conf_files_path }}/site_enabled/site_ssl.conf"
+    owner: root
+    group: "{{ root_group }}"
+    mode: 0644
+    state: link
+  notify:
+    - reload nginx

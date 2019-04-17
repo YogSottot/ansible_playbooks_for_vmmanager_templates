@@ -1,0 +1,20 @@
+location  ~* \.(css|js|gif|png|jpg|jpeg|ico|ogg|ttf|woff|woff2|eot|otf|txt|log)$ {
+  expires max;
+  access_log   off;
+  log_not_found off;
+}
+
+
+location / {
+        try_files $uri $uri/ /index.php$is_args$args;
+        #try_files $uri $uri/ /index.php?$query_string;
+}
+
+location ~ \.php$ {
+        #try_files $uri =404;
+        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+        fastcgi_pass unix:{{ __php_fpm_socket_path }}/{{ nginx_user }}.sock;
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include fastcgi_params;
+}

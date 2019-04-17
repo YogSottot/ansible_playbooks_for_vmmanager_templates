@@ -1,0 +1,88 @@
+location ~* ^\/(classes|errors\/logs|sys\-temp|cache|xmldb|static|packages) {
+    deny all;
+}
+
+location ~* (\/for_del_connector\.php|\.ini|\.conf)$ {
+    deny all;
+}
+
+location ~* ^/(images|files|logs)/.+\.(php|php3|php4|php5|phtml|phps|pl|pm)$ {
+    deny all;
+}
+
+location ~* (config\.ini|install\.ini|install\.log|umi\.nginx\.conf|dbview\.php|umibackup) {
+    rewrite ^(.*)$ / permanent;
+}
+
+location ^~ /(config\.ini|classes|logs|libs|sys-temp|tpls|umaps|usels|xsltTpls) {
+    deny all;
+}
+
+location ^~ /styles/common/other/elfinder/php/ {
+    location ~.*\.(php)?$
+    {
+        deny all;
+    }
+}
+
+location ~* ^(\/files\/|\/images\/) {
+    try_files $uri =404;
+}
+
+location ~* ^\/images\/autothumbs\/ {
+    try_files $uri @autothumbs =404;
+}
+
+location @autothumbs {
+    rewrite ^\/images\/autothumbs\/(.*)$ /autothumbs.php?img=$1$query_string last;
+}
+
+location @clean_url {
+    rewrite ^/(.*)$ /index.php?path=$1 last;
+}
+
+location @dynamic {
+    try_files $uri @clean_url;
+}
+
+location ~* \.js$ {
+    rewrite ^\/(udata|upage|uobject|ufs|usel|ulang|utype|umess|uhttp):?(\/\/)?(.*)? /releaseStreams.php?scheme=$1&path=$3 last;
+    try_files $uri =404;
+}
+
+location ~* \.(ico|jpg|jpeg|png|gif|swf|css|ttf|woff|woff2|eot|otf)$ {
+    access_log off;
+    error_page 404 /404.html;
+    log_not_found off;
+    expires max;
+}
+
+location / {
+    rewrite ^\/\~\/([0-9]+)$ /tinyurl.php?id=$1 last;
+    rewrite ^/robots\.txt /sbots.php?path=$1&$query_string last;
+    rewrite ^/sitemap([0-9]*).xml /sitemap.php?id=$1 last;
+    rewrite ^(.*)\.xml$  /index.php?xmlMode=force&path=$1&$query_string last;
+    rewrite ^/(udata|upage|uobject|ufs|usel|ulang|utype|umess|uhttp):?(\/\/)?(.*)$ /releaseStreams.php?scheme=$1&path=$3&$query_string last;
+    rewrite ^(.*)\.json$ /index.php?jsonMode=force&path=$1&%query_string last;
+    if ($cookie_umicms_session) {
+        error_page 412 = @dynamic;
+        return 412;
+    }
+    if ($request_method = 'POST') {
+        error_page 412 = @dynamic;
+        return 412;
+    }
+    try_files /sys-temp/static-cache/$uri/index.html @dynamic;
+        location ~ [^/]\.ph(p\d*|tml)$ {
+                try_files /does_not_exists @php;
+    }
+}
+location @php {
+        fastcgi_index index.php;
+        fastcgi_pass unix:{{ __php_fpm_socket_path }}/{{ nginx_user }}.sock;
+        fastcgi_split_path_info ^((?U).+\.ph(?:p\d*|tml))(/?.+)$;
+        try_files $uri =404;
+        fastcgi_param  SCRIPT_FILENAME    $document_root$fastcgi_script_name;
+        include fastcgi_params;
+        #include fastcgi.conf;
+}

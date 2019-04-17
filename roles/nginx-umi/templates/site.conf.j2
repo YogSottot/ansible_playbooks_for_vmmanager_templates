@@ -1,0 +1,16 @@
+server {
+    listen       80 default_server;
+    server_name  {{ site_domain }} www.{{ site_domain }};
+    
+    access_log /var/log/nginx/{{ site_domain }}_access.log main;
+    error_log  /var/log/nginx/{{ site_domain }}_error.log warn;
+    
+    root $root_path;
+    set $root_path {{ nginx_site_root }};
+
+    charset UTF-8;
+    disable_symlinks if_not_owner from=$root_path;
+    index index.php;
+
+    include {{ nginx_conf_files_path }}/site_include/*.conf;
+}

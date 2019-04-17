@@ -4,6 +4,8 @@
   become: yes
   become_method: su
   roles:
+    - site_user
+    - tmpfiles
     - pam-limits
     - systemd-overrides
     - sysctl
@@ -12,12 +14,10 @@
     - role: repo-remi
       when: ansible_os_family == 'RedHat'
     - umi-cms
-    - tmpfiles
     - php
     - liquidprompt
     - nginx
-    - certbot
-    - nginx
+    - nginx-umi
   tags: initial
 
 #  tags:

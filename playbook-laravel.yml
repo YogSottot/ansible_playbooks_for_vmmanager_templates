@@ -15,7 +15,7 @@
    - php
    - liquidprompt
    - nginx
-   - nginx-wordpress
+   - nginx-laravel
   tags: initial
 
 # https://gist.github.com/ethanpil/1bfd01a817a8198369efec5c4cde6628
