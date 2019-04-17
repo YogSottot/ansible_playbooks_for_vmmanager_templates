@@ -3,13 +3,18 @@
 - hosts: wordpress
   become: yes
   roles:
+   - site_user
+   - tmpfiles
+   - pam-limits
+   - systemd-overrides
    - sysctl
    - packages
+   - percona_mysql
+   - role: repo-remi
+     when: ansible_os_family == 'RedHat'
+   - php
    - liquidprompt
    - nginx
-   - php-fpm
-   - percona-db
-   - wordpress
   tags: initial
 
 # https://gist.github.com/ethanpil/1bfd01a817a8198369efec5c4cde6628

@@ -1,19 +1,4 @@
 ---
-- name: Add group "UMI"
-  group:
-   name: "{{ site_user }}"
-
-- name: Add user "UMI"
-  user:
-   name: "{{ site_user }}"
-   group: "{{ site_user }}"
-   home: "/home/{{ site_user }}"
-
-- name: Make UMI site dir
-  file:
-   path: "{{ site_root }}"
-   state: directory
-
 - name: Copy UMI install file
   copy:
    src: install.php
@@ -24,24 +9,11 @@
    src: index.php
    dest: "{{ site_root }}/index.php"
 
-- name: Create UMI database
-  mysql_db:
-   name: "{{ umi_db_name }}"
-   state: present
-
-- name: Create UMI database user
-  mysql_user:
-   name: "{{ umi_db_user }}"
-   password: "{{ umi_db_password }}"
-   priv: "{{ umi_db_name }}.*:ALL"
-   host: 'localhost'
-   state: present
-
 - name: Copy UMI config file
   template: src=install.ini.j2 dest={{ site_root }}/install.ini
 
 - name: Change ownership of UMI installation
-  file: path={{ site_root }} owner={{ site_user }} group={{ site_user }} state=directory recurse=yes
+  file: path="/home/{{ site_user }}" owner={{ site_user }} group={{ site_user }} state=directory recurse=yes
 
 - name: Add UMI cron task
   cron:
@@ -51,5 +23,5 @@
 
 - name: Delete mysql password
   file:
-   path: /tmp/mysqlpasswordfile_umi
+   path: /tmp/mysqlpasswordfile_user
    state: absent

@@ -1,0 +1,6 @@
+d /tmp/php_sessions 0770 {{ nginx_user }} {{ nginx_user }} -
+d /tmp/php_sessions/www 0770 {{ nginx_user }} {{ nginx_user }} -
+d /tmp/php_sessions/ext_www 0770 {{ nginx_user }} {{ nginx_user }} -
+d /tmp/php_upload 0770 {{ nginx_user }} {{ nginx_user }} -
+d /tmp/php_upload/www 0770 {{ nginx_user }} {{ nginx_user }} -
+d /tmp/php_upload/ext_www 0770 {{ nginx_user }} {{ nginx_user }} -

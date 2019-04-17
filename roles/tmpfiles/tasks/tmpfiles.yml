@@ -1,0 +1,14 @@
+---
+- name: Ensure php tmp dirs exist
+  template:
+      dest: /etc/tmpfiles.d/php.conf
+      src: tmpfiles_php.j2
+      backup: yes
+  notify: create tmpfiles
+
+- name: Ensure mysql tmp dirs exist
+  template:
+      dest: /etc/tmpfiles.d/mysqld.conf
+      src: tmpfiles_mysqld.j2
+      backup: yes
+  notify: create tmpfiles

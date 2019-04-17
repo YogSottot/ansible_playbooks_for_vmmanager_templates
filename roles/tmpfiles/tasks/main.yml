@@ -1,0 +1,3 @@
+---
+- include: tmpfiles.yml
+  when: "ansible_service_mgr == 'systemd'"

@@ -1,0 +1,8 @@
+---
+systemd_overrides_config_file_path: /etc/systemd/system/
+systemd_overrides_unit:
+   - mysqld
+   - nginx
+   - php-fpm
+   - httpd
+   - memcached

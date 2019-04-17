@@ -12,6 +12,7 @@
     - role: repo-remi
       when: ansible_os_family == 'RedHat'
     - umi-cms
+    - tmpfiles
     - php
     - liquidprompt
     - nginx
