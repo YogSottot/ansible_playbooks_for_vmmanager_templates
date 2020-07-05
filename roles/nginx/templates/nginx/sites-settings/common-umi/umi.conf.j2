@@ -19,7 +19,8 @@ location @autothumbs {
 }
 
 location @clean_url {
-    rewrite ^/(.*)$ /index.php?path=$1 last;
+    #rewrite ^/(.*)$ /index.php?path=$1 last;
+    rewrite ^(.*)$ /index.php?path=$1&$query_string&umi_authorization=$http_authorization last;
 }
 
 location @dynamic {

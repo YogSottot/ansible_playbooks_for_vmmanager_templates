@@ -1,5 +1,16 @@
 location / {
-    proxy_pass $proxyserver;
+        if ($cookie_umicms_session) {
+            error_page 412 = @php;
+            return 412;
+        }
+        if ($request_method = 'POST') {
+            error_page 412 = @php;
+            return 412;
+        }
+        try_files /sys-temp/static-cache/$host/$uri/index.html @php;
+        location ~ [^/]\.ph(p\d*|tml)$ {
+            try_files /does_not_exists @php;
+        }
 }
 
 location @php {

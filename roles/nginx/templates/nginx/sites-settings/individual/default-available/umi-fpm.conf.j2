@@ -7,7 +7,7 @@ location / {
             error_page 412 = @dynamic;
             return 412;
         }
-        try_files /sys-temp/static-cache/$uri/index.html @dynamic;
+        try_files /sys-temp/static-cache/$host/$uri/index.html @dynamic;
         location ~ [^/]\.ph(p\d*|tml)$ {
             try_files /does_not_exists @php;
         }
