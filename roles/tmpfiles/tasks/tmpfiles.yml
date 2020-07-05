@@ -3,12 +3,15 @@
   template:
       dest: /etc/tmpfiles.d/php.conf
       src: tmpfiles_php.j2
-      backup: yes
+      backup: true
   notify: create tmpfiles
 
 - name: Ensure mysql tmp dirs exist
   template:
       dest: /etc/tmpfiles.d/mysqld.conf
       src: tmpfiles_mysqld.j2
-      backup: yes
+      backup: true
   notify: create tmpfiles
+
+- name: create tmpfiles
+  command: systemd-tmpfiles --create

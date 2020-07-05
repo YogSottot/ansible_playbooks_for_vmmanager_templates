@@ -1,10 +1,10 @@
 ---
 - include: configuration_mysql_dir.yml
 
-- name: install mysql system files
-  command:
-    mysqld --initialize --user=mysql --datadir="{{ percona_mysql_data_dir.value }}"
-    creates="{{ percona_mysql_data_dir.value }}/mysql"
+#- name: install mysql system files
+#  command:
+#    mysqld --initialize --user=mysql --datadir="{{ percona_mysql_data_dir.value }}"
+#    creates="{{ percona_mysql_data_dir.value }}/mysql"
 
 - name: copy plugins my.cnf
   template:
@@ -12,7 +12,7 @@
     dest=/etc/mysql/conf.d/plugins.cnf
     owner=mysql
     group=mysql
-    mode=0640
+    mode=0644
     seuser=system_u
     serole=object_r
     setype=mysqld_etc_t
@@ -34,6 +34,7 @@
     setype=initrc_exec_t
     selevel=s0
   tags: percona_mysql_manage_init_script
+  when: "ansible_service_mgr != 'systemd'"
 
 - name: ensure mysql has been stopped after the upgrade
   service:
@@ -48,15 +49,15 @@
     state=started
     enabled=yes
 
-- include: install_plugins.yml
+#- include: install_plugins.yml
 
-- name: optionally execute mysql_upgrade after an upgrade has been performed
-  command:
-    mysql_upgrade --skip-write-binlog
-  when:
-    - "percona_mysql_check_upgrade"
-    - "percona_mysql_pkg_check_redhat.changed or percona_mysql_pkg_check_debian.changed"
-  tags: skip_ansible_lint
+#- name: optionally execute mysql_upgrade after an upgrade has been performed
+#  command:
+#    mysql_upgrade --skip-write-binlog
+#  when:
+#    - "percona_mysql_check_upgrade"
+#    - "percona_mysql_pkg_check_redhat.changed or percona_mysql_pkg_check_debian.changed"
+#  tags: skip_ansible_lint
 
 #- name: ensure percona database exists
 #  mysql_db:

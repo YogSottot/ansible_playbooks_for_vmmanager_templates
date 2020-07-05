@@ -7,7 +7,7 @@
     protocol: tcp
     destination_port: "{{ nginx_http_port }}"
     jump: ACCEPT
-    
+
 - name: insert firewall https rule for nginx
   iptables:
     action: insert

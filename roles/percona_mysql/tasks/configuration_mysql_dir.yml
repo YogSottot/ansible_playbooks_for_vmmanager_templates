@@ -4,7 +4,7 @@
     path={{ percona_mysql_tmp_dir.value }}
     owner=mysql
     group=mysql
-    mode=0750
+    mode=0755
     seuser=system_u
     serole=object_r
     setype=mysqld_tmp_t

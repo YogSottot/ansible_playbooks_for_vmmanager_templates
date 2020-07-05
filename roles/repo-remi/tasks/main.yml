@@ -15,15 +15,35 @@
 
 - name: Add epel repository
   yum:
-    name: epel-release
+    name:
+      - epel-release
+      - yum-utils
     state: present
   register: epel_release_result
   until: epel_release_result is succeeded
 
-- name: Enable remi-php{{ remi_repo_php_version }} repo
-  ini_file:
-    dest: "/etc/yum.repos.d/remi-php{{ remi_repo_php_version }}.repo"
-    section: "remi-php{{ remi_repo_php_version }}"
-    option: enabled
-    value: 1
-  when: remi_repo_php_version
+#- name: Enable remi-php{{ remi_repo_php_version }} repo
+#  ini_file:
+#    dest: "/etc/yum.repos.d/remi-php{{ remi_repo_php_version }}.repo"
+#    section: "remi-php{{ remi_repo_php_version }}"
+#    option: enabled
+#    value: 1
+#  when: remi_repo_php_version
+
+- name: reset RHEL 8 module for PHP
+  command:
+    cmd: dnf module reset -y php
+    warn: false
+  when: ansible_distribution_major_version >= '8'
+
+- name: enable Remi module for PHP {{ remi_repo_php_version }}
+  command:
+    cmd: dnf module enable -y php:remi-{{ remi_repo_php_version }}
+    warn: false
+  when: ansible_distribution_major_version >= '8'
+
+- name: enable Remi module for PHP {{ remi_repo_php_version }}
+  command:
+    cmd: yum-config-manager --enable remi-php{{ remi_repo_php_version_centos7 }}
+    warn: false
+  when: ansible_distribution_major_version == '7'

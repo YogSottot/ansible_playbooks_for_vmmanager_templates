@@ -66,6 +66,8 @@ auto_append_file =
 default_mimetype = "text/html"
 always_populate_raw_post_data = -1
 
+cgi.fix_pathinfo = 0
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 ; Paths and Directories ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -137,7 +139,7 @@ mysql.cache_size = 2000
 mysql.max_persistent = -1
 mysql.max_links = -1
 mysql.default_port =
-mysql.default_socket = /var/lib/mysqld/mysqld.sock
+mysql.default_socket = /var/run/mysqld/mysqld.sock
 mysql.default_host =
 mysql.default_user =
 mysql.default_password =
@@ -150,7 +152,7 @@ mysqli.allow_persistent = On
 mysqli.max_links = -1
 mysqli.cache_size = 2000
 mysqli.default_port = 3306
-mysqli.default_socket = /var/lib/mysqld/mysqld.sock
+mysqli.default_socket = /var/run/mysqld/mysqld.sock
 mysqli.default_host =
 mysqli.default_user =
 mysqli.default_pw =

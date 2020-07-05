@@ -7,4 +7,4 @@
 
 - name: Set Certbot script variable.
   set_fact:
-    certbot_script: "/usr/local/bin/certbot-auto"
+   certbot_script: "/usr/local/bin/certbot-auto"

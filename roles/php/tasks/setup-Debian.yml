@@ -29,33 +29,33 @@
   register: php_ondrej_debian_repo
   when: ansible_distribution == "Debian"
 
-- name: alternatives php link updated
-  alternatives:
-    name: php
-    path: "/usr/bin/php{{ php_default_version_debian }}"
-  when: ansible_os_family == "Debian"
-  ignore_errors: yes
+#- name: alternatives php link updated
+#  alternatives:
+#    name: php
+#    path: "/usr/bin/php{{ php_default_version_debian }}"
+#  when: ansible_os_family == "Debian"
+#  ignore_errors: true
 
-- name: alternatives php-config link updated
-  alternatives:
-    name: php-config
-    path: "/usr/bin/php-config{{ php_default_version_debian }}"
-  when: ansible_os_family == "Debian"
-  ignore_errors: yes
+#- name: alternatives php-config link updated
+#  alternatives:
+#    name: php-config
+#    path: "/usr/bin/php-config{{ php_default_version_debian }}"
+#  when: ansible_os_family == "Debian"
+#  ignore_errors: true
 
-- name: alternatives phpdbg link updated
-  alternatives:
-    name: phpdbg
-    path: "/usr/bin/phpdbg{{ php_default_version_debian }}"
-  when: ansible_os_family == "Debian"
-  ignore_errors: yes
+#- name: alternatives phpdbg link updated
+#  alternatives:
+#    name: phpdbg
+#    path: "/usr/bin/phpdbg{{ php_default_version_debian }}"
+#  when: ansible_os_family == "Debian"
+#  ignore_errors: true
 
-- name: alternatives phpize link updated
-  alternatives:
-    name: phpize
-    path: "/usr/bin/phpize{{ php_default_version_debian }}"
-  when: ansible_os_family == "Debian"
-  ignore_errors: yes
+#- name: alternatives phpize link updated
+#  alternatives:
+#    name: phpize
+#    path: "/usr/bin/phpize{{ php_default_version_debian }}"
+#  when: ansible_os_family == "Debian"
+#  ignore_errors: true
 
 - name: Update apt cache.
   apt: update_cache=yes cache_valid_time=86400
@@ -79,7 +79,7 @@
   when: php_enable_apc and php_package_install.changed
   notify: restart webserver
   tags:
-   - skip_ansible_lint
+    - skip_ansible_lint
 
 - name: Delete OpCache configuration file if this role will provide one.
   file:
@@ -89,4 +89,4 @@
   when: php_opcache_enable and php_package_install.changed
   notify: restart webserver
   tags:
-   - skip_ansible_lint
+    - skip_ansible_lint

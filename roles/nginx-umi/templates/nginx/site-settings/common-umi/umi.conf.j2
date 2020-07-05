@@ -1,0 +1,71 @@
+location ~* ^\/(classes|errors\/logs|sys\-temp|cache|xmldb|static|packages) {
+    deny all;
+}
+
+location ~* (\/for_del_connector\.php|\.ini|\.conf)$ {
+    deny all;
+}
+
+location ~* ^(\/files\/|\/images\/) {
+    try_files $uri =404;
+rewrite_log on;
+
+location ~* \/\.ht {
+    deny all;
+}
+
+location ~* ^\/(classes|errors\/logs|sys\-temp|cache|xmldb|static|packages) {
+    deny all;
+}
+
+location ~* (\/for_del_connector\.php|\.ini|\.conf)$ {
+    deny all;
+}
+
+location ~* ^(\/files\/|\/images\/) {
+    try_files $uri =404;
+rewrite_log on;
+
+location ~* \/\.ht {
+    deny all;
+}
+
+location ~* ^\/(classes|errors\/logs|sys\-temp|cache|xmldb|static|packages) {
+    deny all;
+}
+
+location ~* (\/for_del_connector\.php|\.ini|\.conf)$ {
+    deny all;
+    deny all;
+}
+
+location ~* ^(\/files\/|\/images\/) {
+    try_files $uri =404;
+}
+
+location ~* ^\/images\/autothumbs\/ {
+    try_files $uri @autothumbs =404;
+}
+
+location @autothumbs {
+    rewrite ^\/images\/autothumbs\/(.*)$ /autothumbs.php?img=$1$query_string last;
+}
+
+location @clean_url {
+    rewrite ^/(.*)$ /index.php?path=$1 last;
+}
+
+location @dynamic {
+    try_files $uri @clean_url;
+}
+
+location ~* \.js$ {
+    rewrite ^\/(udata|upage|uobject|ufs|usel|ulang|utype|umess|uhttp):?(\/\/)?(.*)? /releaseStreams.php?scheme=$1&path=$3 last;
+    try_files $uri =404;
+}
+
+location ~* \.(ico|jpg|jpeg|png|gif|swf|css)$ {
+    try_files $uri =404;
+    access_log off;
+    expires max;
+}

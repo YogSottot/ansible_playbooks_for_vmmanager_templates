@@ -6,38 +6,40 @@
   when: nginx_remove_default_vhost
   notify: restart nginx
 
-- name: Ensure nginx_vhost_path exists.
+#- name: Add managed vhost config files.
+#  template:
+#    src: "{{ item.template|default(nginx_vhost_template) }}"
+#    dest: "{{ nginx_vhost_avaliable_path }}/{{ item.filename|default(item.server_name.split(' ')[0] ~ '.conf') }}"
+#    force: true
+#    owner: root
+#    group: root
+#    mode: 0644
+#  notify: reload nginx
+#  tags:
+#    - skip_ansible_lint
+
+- name: Ensure nginx directory structure exists
   file:
-    path: "{{ nginx_vhost_path }}"
+    path: '{{ nginx_conf_files_path }}/{{ item.path }}'
     state: directory
-  notify: reload nginx
+  with_filetree: '{{ nginx_templates_source }}'
+  when: item.state == 'directory'
 
-- name: Add managed vhost config files.
+- name: Ensure nginx vhost conf files are populated from templates (not work, some bug)
   template:
-    src: "{{ item.template|default(nginx_vhost_template) }}"
-    dest: "{{ nginx_vhost_path }}/{{ item.filename|default(item.server_name.split(' ')[0] ~ '.conf') }}"
-    force: true
-    owner: root
-    group: root
-    mode: 0644
-  when: item.state|default('present') != 'absent'
-  with_items: "{{ nginx_vhosts }}"
-  notify: reload nginx
-  tags:
-    - skip_ansible_lint
+    src: '{{ item.src }}'
+    dest: "{{ nginx_conf_files_path }}/{{ item.path | regex_replace('.j2','') }}"
+  with_filetree: '{{ nginx_templates_source }}'
+  when: item.state == 'file'
 
-- name: Remove managed vhost config files.
-  file:
-    path: "{{ nginx_vhost_path }}/{{ item.filename|default(item.server_name.split(' ')[0] ~ '.conf') }}"
-    state: absent
-  when: item.state|default('present') == 'absent'
-  with_items: "{{ nginx_vhosts }}"
-  notify: reload nginx
-  tags:
-    - skip_ansible_lint
+#- name: include vhost wordpres specific
+#  include: vhosts-wordpress.yml
 
-- name: Remove legacy vhosts.conf file.
-  file:
-    path: "{{ nginx_vhost_path }}/vhosts.conf"
-    state: absent
-  notify: reload nginx
+#- name: include vhost umi specific
+#  include: vhosts-umi.yml
+
+#- name: include vhost laravel specific
+#  include: vhosts-laravel.yml
+
+#- name: include vhost universal specific
+#  include: vhosts-universal.yml

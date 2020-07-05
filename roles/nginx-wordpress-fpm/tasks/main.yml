@@ -1,0 +1,57 @@
+---
+- name: Vhost configs file glob
+  find:
+    paths: /etc/nginx/sites-enabled/
+    patterns: "*.conf"
+    file_type: link
+  register: vhost_to_delete
+
+- name: Clean vhost configs
+  file:
+    path: "{{ item.path }}"
+    state: absent
+  with_items: "{{ vhost_to_delete.files }}"
+
+- name: Vhost individual configs file glob
+  find:
+    paths: /etc/nginx/sites-settings/individual/default-enabled/
+    patterns: "*.conf"
+    file_type: link
+  register: ind_vhost_to_delete
+
+- name: Clean vhost individual configs
+  file:
+    path: "{{ item.path }}"
+    state: absent
+  with_items: "{{ ind_vhost_to_delete.files }}"
+
+- name: Setup vhost configs
+  file:
+    src: /etc/nginx/sites-available/wordpress-default.conf
+    dest: /etc/nginx/sites-enabled/wordpress-default.conf
+    state: link
+
+- name: Setup vhost individual configs
+  file:
+    src: /etc/nginx/sites-settings/individual/default-available/wordpress-fpm.conf
+    dest: /etc/nginx/sites-settings/individual/default-enabled/wordpress-fpm.conf
+    state: link
+
+- name: Ensure nginx is restarted
+  service: name=nginx state=restarted enabled=yes
+
+- name: Include OS-specific variables.
+  include_vars: "{{ ansible_os_family }}.yml"
+
+- name: stop apache
+  service:
+    name: "{{ __php_webserver_daemon }}"
+    state: stopped
+    enabled: false
+  ignore_errors: true
+
+- name: start php-fpm
+  service:
+    name: "{{ __php_fpm_daemon }}"
+    state: restarted
+    enabled: true

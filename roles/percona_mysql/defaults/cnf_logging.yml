@@ -24,7 +24,7 @@ percona_mysql_logdir_variables:
     option: slow_query_log_file
     variable: slow_query_log_file
     value: slow.log
-    include: true
+    include: false
     dynamic: true
 
 percona_mysql_logging_variables:
@@ -40,14 +40,14 @@ percona_mysql_logging_variables:
     option: slow-query-log
     variable: slow_query_log
     value: 'OFF'
-    include: true
+    include: false
     dynamic: true
   percona_mysql_long_query_time:
     comment:
     option: long_query_time
     variable: long_query_time
     value: 0.03
-    include: true
+    include: false
     dynamic: true
   percona_mysql_log_slow_admin_statements:
     comment:

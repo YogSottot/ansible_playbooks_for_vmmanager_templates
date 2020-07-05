@@ -11,13 +11,6 @@ percona_mysql_innodb_buffer_pool_size_mb:
   dynamic: false
 
 percona_mysql_innodb_variables:
-  percona_mysql_innodb:
-    comment:
-    option: innodb
-    variable:
-    value: force
-    include: true
-    dynamic: false
   percona_mysql_innodb_buffer_pool_instances:
     comment:
     option: innodb_buffer_pool_instances
@@ -64,7 +57,7 @@ percona_mysql_innodb_variables:
     comment:
     option: innodb_log_file_size
     variable:
-    value: "{{ ( ( ansible_memtotal_mb / 4 ) / 8 ) | int }}"
+    value: "{{ ( ( ansible_memtotal_mb / 4 ) / 8 ) | int }}M"
     include: true
     dynamic: false
   percona_mysql_innodb_file_per_table:

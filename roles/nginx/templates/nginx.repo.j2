@@ -1,5 +1,7 @@
-[nginx]
-name=nginx repo
-baseurl=http://nginx.org/packages/centos/{{ ansible_distribution_major_version }}/$basearch/
-gpgcheck=0
+[nginx-stable]
+name=nginx stable repo
+baseurl=http://nginx.org/packages/centos/$releasever/$basearch/
+gpgcheck=1
 enabled=1
+gpgkey=https://nginx.org/keys/nginx_signing.key
+module_hotfixes=true

@@ -24,7 +24,7 @@
     path: "{{ php_upload_tmp_dir }}"
     owner: "{{ site_user }}"
     group: "{{ site_user }}"
-    mode: 0644
+    mode: 0770
     state: directory
 
 - name: Make PHP php_session_save_path.
@@ -32,5 +32,5 @@
     path: "{{ php_session_save_path }}"
     owner: "{{ site_user }}"
     group: "{{ site_user }}"
-    mode: 0644
+    mode: 0770
     state: directory

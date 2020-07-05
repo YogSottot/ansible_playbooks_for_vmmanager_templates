@@ -1,0 +1,28 @@
+---
+# Firewalld setup
+- name: Add backports repo
+  apt_repository:
+    repo: "deb http://mirror.yandex.ru/debian {{ ansible_distribution_release }}-backports main contrib non-free"
+    update_cache: true
+
+# bug https://github.com/saltstack/salt/issues/55110
+- name: Update the nftables from backports
+  apt:
+    name: nftables
+    state: latest
+    default_release: "{{ ansible_distribution_release }}-backports"
+    update_cache: true
+
+- name: Update the iptables from backports
+  apt:
+    name: iptables
+    state: latest
+    default_release: "{{ ansible_distribution_release }}-backports"
+
+- name: Install Firewalld
+  apt:
+    name: firewalld
+    state: latest
+    default_release: "{{ ansible_distribution_release }}-backports"
+  register: firewalld_installed
+  until: firewalld_installed is succeeded

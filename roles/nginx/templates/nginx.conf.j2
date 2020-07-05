@@ -1,9 +1,11 @@
 user  {{ nginx_user }};
 
 worker_processes auto;
-error_log /var/log/nginx/error.log warn;
-pid /var/run/nginx.pid;
+error_log /var/log/nginx/default_error.log warn;
+pid /run/nginx.pid;
 worker_rlimit_nofile 245760;
+
+# Load dynamic modules. See /usr/share/doc/nginx/README.dynamic.
 include /usr/share/nginx/modules/*.conf;
 
 events {
@@ -14,7 +16,7 @@ events {
 http {
         server_tokens off;
         include /etc/nginx/mime.types;
-        default_type application/force-download;
+        default_type application/octet-stream;
         server_names_hash_bucket_size 128;
 
         # Description of supported access log formats
@@ -37,7 +39,7 @@ http {
         include maps/*.conf;
 
         # settings files
-        include settings/*.conf;
+        include http-settings/*.conf;
 
         # Disable request logging in nginx by default
         #access_log /var/log/nginx/access.log  common;
@@ -48,42 +50,14 @@ http {
         tcp_nodelay                     on;
         client_max_body_size            1024m;
         client_body_buffer_size         4m;
-
-        # Parameters for back-end request proxy
-        proxy_connect_timeout           60;
-        proxy_send_timeout              300;
-        proxy_read_timeout              300;
-        proxy_buffer_size               64k;
-        proxy_buffers                   24 512k;
-        proxy_busy_buffers_size         512k;
-        proxy_temp_file_write_size      20m;
-
-        # for fastcgi
-        fastcgi_read_timeout 300;
-        fastcgi_connect_timeout 300;
-        fastcgi_send_timeout 300;
-        fastcgi_temp_file_write_size 10m;
-        fastcgi_buffer_size 64k;
-        fastcgi_buffering on;
-        fastcgi_buffers 24 256k;
-        fastcgi_busy_buffers_size  256k;
+        keepalive_timeout               65;
+        types_hash_max_size             2048;
 
         # Assign default error handlers
-        error_page 500 502 503 504 /500.html;
+        error_page 500 502 503 504 /50x.html;
         error_page 404 = /404.html;
 
-        # Content compression parameters
-        gzip                            on;
-        gzip_proxied                    any;
-        gzip_static                     on;
-        gzip_http_version               1.0;
-        gzip_types                      text/css text/plain text/json text/x-js text/javascript text/xml application/json application/x-javascript application/xml application/xml+rss application/javascript;
-        gzip_vary on;
-
         # Set default website
-        include site_enabled/*.conf;
-        
+        include sites-enabled/*.conf;
+
 }
-
-
-

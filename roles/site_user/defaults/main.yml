@@ -1,7 +1,8 @@
 ---
 site_user: user
-site_domain: "{{ ansible_fqdn }}"
-site_root: "/home/{{ site_user }}/www/{{ site_domain }}/public_html"
+#site_domain: "{{ ansible_fqdn }}"
+#site_root: "/home/{{ site_user }}/www/{{ site_domain }}/public_html"
+site_root: "/home/{{ site_user }}/www/default/public_html"
 user_db_name: "{{ site_user }}"
 user_db_user: "{{ site_user }}"
-user_db_password: "{{ lookup('password', '/tmp/mysqlpasswordfile_user length=15') }}"
+user_db_password: "{{ lookup('password', '/tmp/mysqlpasswordfile_user_{{ ansible_fqdn }} length=15') }}"

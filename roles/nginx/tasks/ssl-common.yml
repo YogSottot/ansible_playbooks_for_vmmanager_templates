@@ -2,8 +2,9 @@
 - name: Generate X bit dhparam.pem file (this may take a while)
   openssl_dhparam:
       path: /etc/nginx/ssl/dhparam.pem
+      size: 2048
 
-- name: Check letsencrypt exist
-  stat:
-      path: "/etc/letsencrypt/live/{{ site_domain }}"
-  register: letsencrypt_result
+#- name: Check letsencrypt exist
+#  stat:
+#      path: "/etc/letsencrypt/live/{{ site_domain }}"
+#  register: letsencrypt_result

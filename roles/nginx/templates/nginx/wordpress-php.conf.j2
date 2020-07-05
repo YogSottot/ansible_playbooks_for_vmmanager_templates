@@ -1,0 +1,8 @@
+try_files $uri $document_root$fastcgi_script_name =404;           
+fastcgi_pass unix:{{ __php_fpm_socket_path }}/{{ nginx_user }}.sock;          
+fastcgi_index index.php;
+fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;     
+include fastcgi_params;
+
+# prevention for httpoxy vulnerability: https://httpoxy.org/          
+fastcgi_param HTTP_PROXY "";

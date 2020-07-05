@@ -3,7 +3,7 @@
 # Percona MySQL Role options
 #---------------------------------------------------------------
 # Desired Percona Server version
-percona_mysql_server_version: 5.7
+percona_mysql_server_version: 8.0
 
 # MySQL service name
 percona_mysql_service_name: mysql

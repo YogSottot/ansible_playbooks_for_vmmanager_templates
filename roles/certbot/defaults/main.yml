@@ -39,4 +39,3 @@ certbot_install_from_source: false
 certbot_repo: https://github.com/certbot/certbot.git
 certbot_version: master
 certbot_keep_updated: true
-

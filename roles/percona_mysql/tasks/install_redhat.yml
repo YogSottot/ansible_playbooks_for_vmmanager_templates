@@ -22,6 +22,15 @@
   register: numactl_result
   until: numactl_result is succeeded
 
+- name: enable percona repo on red hat family hosts
+  command: percona-release setup ps80
+
+- name: disable RHEL 8 module for MySQL
+  command:
+    cmd: dnf module disable -y mysql
+    warn: false
+  when: ansible_distribution_major_version >= '8'
+
 - name: install mysql package on red hat family hosts
   yum:
     name={{ percona_mysql_pkg }}

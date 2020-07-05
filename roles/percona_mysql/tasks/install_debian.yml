@@ -14,7 +14,7 @@
 
 - name: Add Percona repositories
   apt:
-      deb: "https://repo.percona.com/apt/percona-release_0.1-6.{{ ansible_distribution_release }}_all.deb"
+    deb: "https://repo.percona.com/apt/percona-release_latest.{{ ansible_distribution_release }}_all.deb"
   register: percona_mysql_apt_repo
   until: percona_mysql_apt_repo is succeeded
 
@@ -43,6 +43,9 @@
   when: percona_mysql_include_numa_variables
   register: numactl_result
   until: numactl_result is succeeded
+
+- name: enable percona repo on red hat family hosts
+  command: percona-release setup ps80
 
 - name: install mysql package on debian family hosts
   apt:

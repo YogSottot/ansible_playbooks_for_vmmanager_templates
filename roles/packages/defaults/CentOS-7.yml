@@ -6,7 +6,6 @@ standart_packages:
  - byobu
  - curl
  - deltarpm
- - gdb
  - git
  - htop
  - iftop
@@ -18,10 +17,9 @@ standart_packages:
  - ncdu
  - net-tools
  - nmap
- - policycoreutils-python
+ #- policycoreutils-python
  - psmisc
- - setools-console
- - tmux
+ #- setools-console
  - traceroute
  - wget
  - yum-utils

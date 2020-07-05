@@ -21,4 +21,3 @@
     value: "{{ item.value.value }}"
     state: present
   loop: "{{ lookup('dict', sysctl) }}"
-

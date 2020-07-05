@@ -1,0 +1,35 @@
+location / {
+        rewrite ^/robots\.txt /sbots.php?path=$1&$query_string last;
+#        rewrite ^\/robots\.txt /sbots.php?path=$1 last;
+#        rewrite ^\/sitemap\.xml /sitemap.php last;
+        rewrite ^/sitemap([0-9]*).xml /sitemap.php?id=$1 last;
+        rewrite ^\/\~\/([0-9]+)$ /tinyurl.php?id=$1 last;
+#        rewrite ^\/(udata|upage|uobject|ufs|usel|ulang|utype|umess|uhttp):?(\/\/)?(.*)? /releaseStreams.php?scheme=$1&path=$3 last;
+        rewrite ^/(udata|upage|uobject|ufs|usel|ulang|utype|umess|uhttp):?(\/\/)?(.*)$ /releaseStreams.php?scheme=$1&path=$3&$query_string last;
+        rewrite ^(.*)\.xml$  /index.php?xmlMode=force&path=$1&$query_string last;
+#        rewrite ^\/(.*)\.xml$ /index.php?xmlMode=force&path=$1 last;
+#        rewrite ^(.*)\.json$ /index.php?jsonMode=force&path=$1 last;
+        rewrite ^(.*)\.json$ /index.php?jsonMode=force&path=$1&%query_string last;
+        if ($cookie_umicms_session) {
+            error_page 412 = @dynamic;
+            return 412;
+        }
+        if ($request_method = 'POST') {
+            error_page 412 = @dynamic;
+            return 412;
+        }
+        try_files /sys-temp/static-cache/$uri/index.html @dynamic;
+        location ~ [^/]\.ph(p\d*|tml)$ {
+            try_files /does_not_exists @php;
+        }
+}
+
+location @php {
+        fastcgi_index index.php;
+        fastcgi_pass unix:{{ __php_fpm_socket_path }}/{{ nginx_user }}.sock;
+        fastcgi_split_path_info ^((?U).+\.ph(?:p\d*|tml))(/?.+)$;
+        try_files $uri =404;
+        fastcgi_param  SCRIPT_FILENAME    $document_root$fastcgi_script_name;
+        include fastcgi_params;
+}
+

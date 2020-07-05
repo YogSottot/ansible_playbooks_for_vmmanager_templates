@@ -15,9 +15,9 @@
   register: nginx_package_name
   until: nginx_package_name is succeeded
 
-- name: Ensure pyOpenSSL is installed.
-  yum:
-    name: pyOpenSSL
-    state: present
-  register: nginx_pyopenssl
-  until: nginx_pyopenssl is succeeded
+#- name: Ensure pyOpenSSL is installed.
+#  yum:
+#    name: pyOpenSSL
+#    state: present
+#  register: nginx_pyopenssl
+#  until: nginx_pyopenssl is succeeded

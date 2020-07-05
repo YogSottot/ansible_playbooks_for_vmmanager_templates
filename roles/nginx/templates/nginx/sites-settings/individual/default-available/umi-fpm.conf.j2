@@ -1,0 +1,23 @@
+location / {
+        if ($cookie_umicms_session) {
+            error_page 412 = @dynamic;
+            return 412;
+        }
+        if ($request_method = 'POST') {
+            error_page 412 = @dynamic;
+            return 412;
+        }
+        try_files /sys-temp/static-cache/$uri/index.html @dynamic;
+        location ~ [^/]\.ph(p\d*|tml)$ {
+            try_files /does_not_exists @php;
+        }
+}
+
+location @php {
+        fastcgi_index index.php;
+        fastcgi_pass unix:{{ __php_fpm_socket_path }}/{{ nginx_user }}.sock;
+        fastcgi_split_path_info ^((?U).+\.ph(?:p\d*|tml))(/?.+)$;
+        try_files $uri =404;
+        fastcgi_param  SCRIPT_FILENAME    $document_root$fastcgi_script_name;
+        include fastcgi_params;
+}

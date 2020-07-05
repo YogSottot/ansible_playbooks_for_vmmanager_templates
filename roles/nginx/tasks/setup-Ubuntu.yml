@@ -1,29 +1,42 @@
 ---
-- name: Add PPA for Nginx.
-  apt_repository:
-    repo: 'ppa:nginx/{{ nginx_ppa_version }}'
+#- name: Add PPA for Nginx.
+#  apt_repository:
+#    repo: 'ppa:nginx/{{ nginx_ppa_version }}'
+#    state: present
+#    update_cache: true
+#  register: nginx_ppa_added
+#  when: nginx_ppa_use
+#  until: nginx_ppa_added is succeeded
+
+- name: Enable nginx repo.
+  template:
+    src: nginx_ubuntu.repo.j2
+    dest: /etc/apt/sources.list.d/nginx.list
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Add nginx repo key (Debian).
+  apt_key:
+    url: https://nginx.org/keys/nginx_signing.key
     state: present
-    update_cache: true
-  register: nginx_ppa_added
-  when: nginx_ppa_use
-  until: nginx_ppa_added is succeeded
 
 - name: Update apt cache.
-  apt: update_cache=yes cache_valid_time=86400
+  apt: update_cache=yes
   changed_when: false
   register: apt_cache_updated
   until: apt_cache_updated is succeeded
 
 - name: Ensure nginx will reinstall if the PPA was just added.
   apt:
-    name: nginx
+    name: "{{ nginx_package_name }}"
     state: present
   register: nginx_package_name
   until: nginx_package_name is succeeded
 
-- name: Ensure pyOpenSSL is installed.
-  apt:
-    name: python-openssl
-    state: present
-  register: nginx_pyopenssl
-  until: nginx_pyopenssl is succeeded
+#- name: Ensure pyOpenSSL is installed.
+#  apt:
+#    name: python-openssl
+#    state: present
+#  register: nginx_pyopenssl
+#  until: nginx_pyopenssl is succeeded

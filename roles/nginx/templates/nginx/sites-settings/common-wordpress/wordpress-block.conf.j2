@@ -1,0 +1,50 @@
+location ~* /wp-includes/.*\.php$ {
+        deny all;
+        access_log off;
+        log_not_found off;
+}
+
+location ~* /wp-content/.*\.php$ {
+        deny all;
+        access_log off;
+        log_not_found off;
+}
+
+location ~* /(?:uploads|files)/.*\.php$ {
+        deny all;
+        access_log off;
+        log_not_found off;
+}
+
+location = /xmlrpc.php {
+        satisfy any;
+        allow 127.0.0.1;
+        deny  all;
+        access_log off;
+        log_not_found off;
+}
+
+location = /.user.ini {
+        satisfy any;
+        allow 127.0.0.1;
+        deny  all;
+        access_log off;
+        log_not_found off;
+}
+
+# Deny access to wp-content folders for suspicious files
+location ~* ^/(wp-content)/(.*?)\.(zip|gz|tar|bzip2|7z)$ { deny all; }
+location ~* ^/wp-content/uploads/sucuri { deny all; }
+location ~* ^/wp-content/updraft { deny all; }
+
+# Block nginx-help log from public viewing
+location ~* /wp-content/uploads/nginx-helper/ { deny all; }
+
+# Deny access to uploads that aren’t images, videos, music, etc.
+location ~* ^/wp-content/uploads/.*.(html|htm|shtml|php|js|swf|css)$ {
+    deny all;
+}
+
+location = /wp-config.php { 
+    deny all;
+}

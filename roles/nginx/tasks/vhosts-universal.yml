@@ -1,0 +1,15 @@
+---
+- name: Ensure nginx vhost conf files are populated from templates
+  template:
+    src: nginx/sites-available/universal-default.conf.j2
+    dest: '{{ nginx_conf_files_path }}/sites-available/universal-default.conf'
+
+- name: Ensure nginx vhost conf files are populated from templates
+  template:
+    src: nginx/sites-settings/individual/default-available/universal-fpm.conf.j2
+    dest: '{{ nginx_conf_files_path }}/sites-settings/individual/default-available/universal-fpm.conf'
+
+- name: Ensure nginx vhost conf files are populated from templates
+  template:
+    src: nginx/sites-settings/individual/default-available/universal-httpd.conf.j2
+    dest: '{{ nginx_conf_files_path }}/sites-settings/individual/default-available/universal-httpd.conf'

@@ -1,0 +1,20 @@
+server {
+    listen       80 default_server;
+    server_name  _;
+    
+    access_log /var/log/nginx/default_access.log main;
+    error_log  /var/log/nginx/default_error.log warn;
+
+    
+    root $root_path;
+    set $root_path {{ nginx_site_root }};
+
+    charset UTF-8;
+    disable_symlinks if_not_owner from=$root_path;
+    index index.php;
+
+    include site-settings/common/*.conf;
+    include site-settings/common-umi/*.conf;
+    include site-settings/individual/default/*.conf;
+
+}

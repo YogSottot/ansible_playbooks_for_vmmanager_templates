@@ -84,4 +84,3 @@ percona_mysql_audit_logging_variables:
     value: 0
     include: true
     dynamic: false
-

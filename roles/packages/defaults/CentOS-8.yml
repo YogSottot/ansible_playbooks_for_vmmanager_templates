@@ -1,0 +1,21 @@
+---
+standart_packages:
+ - bash-completion
+ - bind-utils
+ - byobu
+ - curl
+ - git
+ - htop
+ - iftop
+ - iotop
+ - lsof
+ - mc
+ - nano
+ - ncdu
+ - net-tools
+ - nmap
+ - psmisc
+ - traceroute
+ - wget
+ - yum-utils
+ - tar

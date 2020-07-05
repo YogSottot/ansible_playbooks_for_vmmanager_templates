@@ -16,10 +16,7 @@
     - "setup-{{ ansible_distribution }}.yml"
     - "setup-{{ ansible_os_family }}.yml"
 
-# Vhost configuration.
-- import_tasks: vhosts.yml
-
-# Firealld setup.
+# Setup configs dirs.
 - name: Setup configs dirs
   include: dirs.yml
 
@@ -38,19 +35,24 @@
 - name: Setup common ssl
   include: ssl-common.yml
 
-- name: Setup umi config
-  include: umi_config.yml
-  when: "'umi-cms' in group_names"
+# Vhost configuration.
+- import_tasks: vhosts.yml
+
+#- name: Setup umi config
+#  include: umi_config.yml
+#  when: "'umi-cms' in group_names"
 
 # Firealld setup.
-- name: Setup firewall
+- name: Install firewall
   include_tasks: "{{ item }}"
   with_first_found:
     - "firewall-{{ ansible_distribution }}-{{ ansible_distribution_version }}.yml"
     - "firewall-{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml"
     - "firewall-{{ ansible_distribution }}.yml"
     - "firewall-{{ ansible_os_family }}.yml"
-    - "firewalld.yml"
+
+- name: Setup firewall
+  include: firewalld.yml
 
 - name: Ensure nginx is started and enabled to start at boot.
   service: name=nginx state=started enabled=yes

@@ -3,18 +3,19 @@ __php_packages:
   - php
   - php-cli
   - php-common
-  - php-devel
+  - php-curl
   - php-fpm
   - php-gd
   - php-imagick
   - php-imap
-  - php-ldap
+#  - php-ldap
   - php-mbstring
   - php-mysqli
   - php-opcache
   - php-pdo
   - php-pear
-  - php-pecl-apcu
+  - php-soap
+#  - php-pecl-apcu
   - php-xml
   - php-xmlrpc
 __php_webserver_daemon: "httpd"

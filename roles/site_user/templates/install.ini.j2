@@ -1,0 +1,10 @@
+[LICENSE]
+domain = "{{ ansible_fqdn }}"
+ip = "{{ ansible_default_ipv4.address }}"
+key = ""
+[DB]
+host = "localhost"
+port = ""
+user = "{{ user_db_user }}"
+password = "{{ user_db_password }}"
+dbname = "{{ user_db_name }}"

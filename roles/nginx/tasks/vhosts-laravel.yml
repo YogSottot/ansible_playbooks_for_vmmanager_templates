@@ -1,0 +1,20 @@
+---
+- name: Ensure nginx vhost conf files are populated from templates
+  template:
+    src: nginx/sites-available/laravel-default.conf.j2
+    dest: '{{ nginx_conf_files_path }}/sites-available/laravel-default.conf'
+
+- name: Ensure nginx vhost conf files are populated from templates
+  template:
+    src: nginx/sites-settings/common-laravel/laravel.conf.j2
+    dest: '{{ nginx_conf_files_path }}/sites-settings/common-laravel/laravel.conf'
+
+- name: Ensure nginx vhost conf files are populated from templates
+  template:
+    src: nginx/sites-settings/individual/default-available/laravel-fpm.conf.j2
+    dest: '{{ nginx_conf_files_path }}/sites-settings/individual/default-available/laravel-fpm.conf'
+
+- name: Ensure nginx vhost conf files are populated from templates
+  template:
+    src: nginx/sites-settings/individual/default-available/laravel-httpd.conf.j2
+    dest: '{{ nginx_conf_files_path }}/sites-settings/individual/default-available/laravel-httpd.conf'

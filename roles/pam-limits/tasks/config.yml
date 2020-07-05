@@ -11,8 +11,8 @@
     state: touch
   when: "not item.0.stat.exists"
   with_together:
-  - '{{ pam_config_file.results }}'
-  - '{{ pam_limits_config }}'
+    - '{{ pam_config_file.results }}'
+    - '{{ pam_limits_config }}'
 
 - name: Ensure configuration
   pam_limits:
@@ -22,5 +22,5 @@
     limit_item: '{{ item.1.item }}'
     value: '{{ item.1.value }}'
   with_subelements:
-  - '{{ pam_limits_config }}'
-  - parameters
+    - '{{ pam_limits_config }}'
+    - parameters

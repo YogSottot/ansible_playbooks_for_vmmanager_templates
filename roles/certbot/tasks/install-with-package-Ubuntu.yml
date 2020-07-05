@@ -2,7 +2,7 @@
 - name: Add repo universe
   apt_repository:
     repo: "deb http://mirror.yandex.ru/ubuntu {{ ansible_distribution_release }} universe"
-    update_cache: yes
+    update_cache: true
 
 - apt_repository:
     repo: ppa:certbot/certbot

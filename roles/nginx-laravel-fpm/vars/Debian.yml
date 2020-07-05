@@ -1,0 +1,3 @@
+---
+__php_webserver_daemon: "apache2"
+__php_fpm_daemon: php{{ php_default_version_debian }}-fpm

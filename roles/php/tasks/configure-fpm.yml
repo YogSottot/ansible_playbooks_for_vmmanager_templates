@@ -45,8 +45,8 @@
 
 - name: Disable default pool
   file:
-      path: "{{ __php_fpm_pool_dir_path }}/www.conf"
-      state: absent
+    path: "{{ __php_fpm_pool_dir_path }}/www.conf"
+    state: absent
   notify: restart php-fpm
 
 - name: Configure php-fpm pool (if enabled).

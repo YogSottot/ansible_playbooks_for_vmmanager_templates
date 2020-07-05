@@ -5,6 +5,9 @@ nginx_conf_file_path: /etc/nginx/nginx.conf
 nginx_conf_files_path: /etc/nginx
 nginx_mime_file_path: /etc/nginx/mime.types
 nginx_pidfile: /run/nginx.pid
-nginx_vhost_path: /etc/nginx/sites-enabled
+nginx_vhost_path: /etc/nginx/sites-enabled/
+nginx_vhost_avaliable_path: /etc/nginx/sites-available/
 nginx_default_vhost_path: /etc/nginx/sites-enabled/default
 __nginx_user: "www-data"
+nginx_conf_template: "nginx_debian.conf.j2"
+__php_fpm_socket_path: /var/run/php

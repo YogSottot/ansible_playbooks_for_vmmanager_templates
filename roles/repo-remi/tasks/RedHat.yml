@@ -1,0 +1,31 @@
+---
+- name: Import remi GPG key.
+  rpm_key:
+    key: "{{ remi_repo_gpg_key_url }}"
+    state: present
+  register: remi_repo_gpg_key_url_result
+  until: remi_repo_gpg_key_url_result is succeeded
+
+- name: Install remi repo.
+  yum:
+    name: "{{ remi_repo_url }}"
+    state: present
+  register: remi_repo_url_result
+  until: remi_repo_url_result is succeeded
+
+- name: Add epel repository
+  yum:
+    name:
+      - epel-release
+      - yum-utils
+    state: present
+  register: epel_release_result
+  until: epel_release_result is succeeded
+
+- name: Enable remi-php{{ remi_repo_php_version }} repo
+  ini_file:
+    dest: "/etc/yum.repos.d/remi-php{{ remi_repo_php_version }}.repo"
+    section: "remi-php{{ remi_repo_php_version }}"
+    option: enabled
+    value: 1
+  when: remi_repo_php_version

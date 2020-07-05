@@ -8,14 +8,20 @@
     mode: '0755'
   with_items:
     - "{{ nginx_conf_files_path }}/map"
-    - "{{ nginx_conf_files_path }}/settings"
-    - "{{ nginx_conf_files_path }}/site_avaliable"
-    - "{{ nginx_conf_files_path }}/site_enabled"
-    - "{{ nginx_conf_files_path }}/site_include"
+    - "{{ nginx_conf_files_path }}/http-settings"
+    - "{{ nginx_conf_files_path }}/sites-available"
+    - "{{ nginx_conf_files_path }}/sites-enabled"
+    - "{{ nginx_conf_files_path }}/sites-settings/common/"
+    - "{{ nginx_conf_files_path }}/sites-settings/common-wordpress/"
+    - "{{ nginx_conf_files_path }}/sites-settings/common-umi/"
+    - "{{ nginx_conf_files_path }}/sites-settings/common-laravel/"
+    - "{{ nginx_conf_files_path }}/sites-settings/common-universal/"
+    - "{{ nginx_conf_files_path }}/sites-settings/individual/default-available/"
+    - "{{ nginx_conf_files_path }}/sites-settings/individual/default-enabled/"
     - "{{ nginx_conf_files_path }}/ssl"
 
 - name: Add letsencrypt dir
   file:
-      path: /opt/letsencrypt/
-      state: directory
-      owner: "{{ nginx_user }}"
+    path: /opt/letsencrypt/
+    state: directory
+    owner: "{{ nginx_user }}"

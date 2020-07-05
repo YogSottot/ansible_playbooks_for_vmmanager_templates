@@ -37,6 +37,7 @@
 ### {{ ansible_managed }}
 [client]
 socket                                                          = /var/run/mysqld/mysqld.sock
+default-character-set=utf8mb4
 
 [mysqld]
 ### General options
@@ -66,6 +67,7 @@ pid-file                                                        = /var/run/mysql
 {{ render_group(percona_mysql_numa_innodb_variables) }}{% endif %}
 {{ render_group(percona_mysql_innodb_variables) }}
 ### Replication options
+disable_log_bin
 {{ render_dirgroup(percona_mysql_binlog_dir, percona_mysql_replicationdir_variables) }}{{ render_group(percona_mysql_replication_variables) }}
 {% if percona_mysql_include_pxc_variables %}### PXC options
 {{ render_group(percona_mysql_pxc_variables) }}

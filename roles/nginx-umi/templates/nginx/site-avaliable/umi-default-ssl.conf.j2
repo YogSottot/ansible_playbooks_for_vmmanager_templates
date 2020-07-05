@@ -1,0 +1,23 @@
+server {
+    listen       443 http2 ssl default_server;
+    server_name  _;
+
+    include ssl/ssl.common.conf;
+    ssl_certificate         /etc/nginx/ssl/default.pem;
+    ssl_certificate_key     /etc/nginx/ssl/default.key;
+
+    access_log /var/log/nginx/{{ site_domain }}_access.log main;
+    error_log  /var/log/nginx/{{ site_domain }}_error.log warn;
+    
+    root $root_path;
+    set $root_path {{ nginx_site_root }};
+
+    charset UTF-8;
+    disable_symlinks if_not_owner from=$root_path;
+    index index.php;
+
+    include site-settings/common/*.conf;
+    include site-settings/common-umi/*.conf;
+    include site-settings/individual/default/*.conf;
+
+}

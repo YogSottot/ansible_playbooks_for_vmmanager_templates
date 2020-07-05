@@ -1,0 +1,30 @@
+---
+- name: Ensure nginx vhost conf files are populated from templates
+  template:
+    src: nginx/sites-available/wordpress-default.conf.j2
+    dest: '{{ nginx_conf_files_path }}/sites-available/wordpress-default.conf'
+
+- name: Ensure nginx vhost conf files are populated from templates
+  template:
+    src: nginx/sites-settings/common-wordpress/wordpress-block.conf.j2
+    dest: '{{ nginx_conf_files_path }}/sites-settings/common-wordpress/wordpress-block.conf'
+
+- name: Ensure nginx vhost conf files are populated from templates
+  template:
+    src: nginx/sites-settings/common-wordpress/wordpress-main.conf.j2
+    dest: '{{ nginx_conf_files_path }}/sites-settings/common-wordpress/wordpress-main.conf'
+
+- name: Ensure nginx vhost conf files are populated from templates
+  template:
+    src: nginx/sites-settings/individual/default-available/wordpress-fpm.conf.j2
+    dest: '{{ nginx_conf_files_path }}/sites-settings/individual/default-available/wordpress-fpm.conf'
+
+- name: Ensure nginx vhost conf files are populated from templates
+  template:
+    src: nginx/sites-settings/individual/default-available/wordpress-httpd.conf.j2
+    dest: '{{ nginx_conf_files_path }}/sites-settings/individual/default-available/wordpress-httpd.conf'
+
+- name: Ensure nginx vhost conf files are populated from templates
+  template:
+    src: nginx/sites-settings/individual/default-available/wordpress-php.conf.j2
+    dest: '{{ nginx_conf_files_path }}/sites-settings/individual/default-available/wordpress-php.conf'

@@ -30,12 +30,12 @@
 #    var: mysql_root_password_temp.stdout_lines
 #  when: mysql_root_password_temp.stdout
 
-- name: Generate local random password that we'll use for root@localhost in MySQL
-  command: "echo {{ percona_mysql_root_password | default(lookup('password', '/tmp/percona_mysql/' + inventory_hostname + '_percona_mysql_root_password_file length=12 chars=ascii_letters,digits'), true) }}"
-  register: percona_mysql_root_password
-  tags:
-    - register
-    - skip_ansible_lint
+#- name: Generate local random password that we'll use for root@localhost in MySQL
+#  command: "echo {{ percona_mysql_root_password | default(lookup('password', '/tmp/percona_mysql/' + inventory_hostname + '_percona_mysql_root_password_file length=12 chars=ascii_letters,digits'), true) }}"
+#  register: percona_mysql_root_password
+#  tags:
+#    - register
+#    - skip_ansible_lint
 
 #- debug:
 #    var: percona_mysql_root_password
@@ -50,11 +50,11 @@
     - "not percona_mysql_password_changed.stat.exists"
 
 - name: Set new root password using ALTER USER syntax for PS57+
-  shell: 'mysqladmin -u root --password="{{ mysql_root_password_temp.stdout }}" password "{{ percona_mysql_root_password.stdout }}"'
+  shell: 'mysqladmin -u root --password="{{ mysql_root_password_temp.stdout }}" password "{{ mysql_root_password_temp.stdout }}"'
   register: mysql_change_root_password
   tags:
-   - register
-   - skip_ansible_lint
+    - register
+    - skip_ansible_lint
   when:
     - 'percona_mysql_server_version|replace(".","") >= "5.7"'
     - "not percona_mysql_password_changed.stat.exists"
@@ -113,39 +113,38 @@
     - (ansible_env.USER != 'root')
     - percona_mysql_user_name is defined
 
-- name: remove anonymous users
-  mysql_user:
-    name=''
-    host={{ item }}
-    state=absent
-    login_unix_socket=/var/run/mysqld/mysqld.sock
-  with_items:
-      - localhost
-      - "{{ ansible_hostname }}"
-  ignore_errors: true
+#- name: remove anonymous users
+#  mysql_user:
+#    name=''
+#    host={{ item }}
+#    state=absent
+#    login_unix_socket=/var/run/mysqld/mysqld.sock
+#  with_items:
+#    - localhost
+#    - "{{ ansible_hostname }}"
+#  ignore_errors: true
 
-- name: remove superfluous root users
-  mysql_user:
-    name=root
-    host={{ item }}
-    state=absent
-    login_unix_socket=/var/run/mysqld/mysqld.sock
-  with_items:
-      - 127.0.0.1
-      - ::1
-      - "{{ ansible_hostname }}"
-  ignore_errors: true
+#- name: remove superfluous root users
+#  mysql_user:
+#    name=root
+#    host={{ item }}
+#    state=absent
+#    login_unix_socket=/var/run/mysqld/mysqld.sock
+#  with_items:
+#    - 127.0.0.1
+#    - ::1
+#    - "{{ ansible_hostname }}"
+#  ignore_errors: true
 
-- name: Remove the default test database
-  mysql_db:
-    name=test
-    state=absent
-  ignore_errors: true
+#- name: Remove the default test database
+#  mysql_db:
+#    name=test
+#    state=absent
+#  ignore_errors: true
 
 - name: Remove the passwords tmp directory
-  become: no
+  become: false
   file:
-      path: /tmp/percona_mysql/
-      state: absent
+    path: /tmp/percona_mysql/
+    state: absent
   delegate_to: 127.0.0.1
-...

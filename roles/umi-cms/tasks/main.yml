@@ -17,11 +17,16 @@
 
 - name: Add UMI cron task
   cron:
-   name: UMI cron task.
+   name: UMI cron task
    user: "{{ site_user }}"
    job: "test -f {{ site_root }}/cron.php && { /usr/bin/php -f {{ site_root }}/cron.php; } >/dev/null 2>&1"
+   minute: "*"
+   hour: "*"
+   day: "*"
+   month: "*"
+   weekday: "*"
 
 - name: Delete mysql password
   file:
-   path: /tmp/mysqlpasswordfile_user
+   path: /tmp/mysqlpasswordfile_user_{{ ansible_fqdn }}
    state: absent

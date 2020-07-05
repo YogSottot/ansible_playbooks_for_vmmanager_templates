@@ -1,3 +1,4 @@
+---
 php_fpm_deps:
     - php-fpm
     - php-enchant

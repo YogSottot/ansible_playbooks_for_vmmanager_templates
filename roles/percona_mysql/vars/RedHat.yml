@@ -6,15 +6,16 @@ percona_mysql_selinux_pkgs:
 percona_mysql_repo:
     - "https://repo.percona.com/yum/percona-release-latest.noarch.rpm"
 
-percona_mysql_pkg: Percona-{{ percona_mysql_pkg_flavor }}-{{ percona_mysql_pkg_type|lower }}-{{ percona_mysql_server_version|replace(".","") }}
+#percona_mysql_pkg: Percona-{{ percona_mysql_pkg_flavor }}-{{ percona_mysql_pkg_type|lower }}-{{ percona_mysql_server_version|replace(".","") }}
+percona_mysql_pkg: percona-server-server
 
 percona_mysql_additional_pkgs:
-    - MySQL-python
+    - python3-PyMySQL
     - percona-toolkit
     - epel-release
 
 percona_mysql_backup_pkgs:
-    - percona-xtrabackup-24
+    - percona-xtrabackup-80
     - qpress
 
 percona_mysql_optional_pkgs:
@@ -23,9 +24,9 @@ percona_mysql_optional_pkgs:
 percona_mysql_user_shell: /sbin/nologin
 
 percona_mysql_jemalloc:
-  comment:
-  option: malloc-lib
-  variable:
-  value: "/usr/lib64/libjemalloc.so.1"
-  include: true
-  dynamic: false
+    comment:
+    option: malloc-lib
+    variable:
+    value: "/usr/lib64/libjemalloc.so.1"
+    include: true
+    dynamic: false

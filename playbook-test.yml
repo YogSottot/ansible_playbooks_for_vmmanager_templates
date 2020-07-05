@@ -1,0 +1,23 @@
+---
+# playbook.yml file.
+- hosts: all
+  become: true
+  become_method: su
+
+- include: playbook-umi-fpm.yml
+  when: "'umi_fpm' in group_names"
+
+- include: playbook-umi-httpd.yml
+  when: "'umi_httpd' in group_names"
+
+- include: playbook-universal-fpm.yml
+  when: "'universal_fpm' in group_names"
+
+- include: playbook-universal-httpd.yml
+  when: "'universal_httpd' in group_names"
+
+- include: playbook-wordpress-fpm.yml
+  when: "'wordpress_fpm' in group_names"
+
+- include: playbook-wordpress-httpd.yml
+  when: "'wordpress_httpd' in group_names"

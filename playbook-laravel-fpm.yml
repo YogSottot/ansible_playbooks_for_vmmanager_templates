@@ -1,0 +1,35 @@
+---
+# playbook.yml file.
+- hosts: install_python
+  gather_facts: false
+  become: true
+  become_method: su
+  pre_tasks:
+   - name: Setup python
+     raw: dnf install -y python3
+
+- hosts: laravel_fpm
+  become: true
+  become_method: su
+  pre_tasks:
+   - name: Set timezone to Europe/Moscow
+     timezone:
+      name: Europe/Moscow
+  roles:
+   - swap
+   - pam-limits
+   - systemd-overrides
+   - locale
+  # - sysctl
+   - packages
+   - timesync
+   - percona_mysql
+   - site_user
+   - tmpfiles
+   - role: repo-remi
+     when: ansible_os_family == 'RedHat'
+   - php
+   - liquidprompt
+   - nginx
+   - nginx-laravel-fpm
+  tags: initial

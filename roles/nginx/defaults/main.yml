@@ -5,6 +5,8 @@ nginx_site_root: "/home/{{ nginx_user }}/www/{{ site_domain }}/public_html"
 nginx_http_port: 80
 nginx_https_port: 443
 
+nginx_templates_source: "../templates/nginx/"
+
 # Used only for Debian/Ubuntu installation, as the -t option for apt.
 nginx_default_release: ""
 
@@ -18,7 +20,6 @@ nginx_ppa_version: stable
 # The name of the nginx package to install.
 nginx_package_name: "nginx"
 
-nginx_conf_template: "nginx.conf.j2"
 nginx_vhost_template: "vhost.j2"
 
 nginx_worker_processes: >-

@@ -2,7 +2,7 @@
 - name: check if MySQL is running with jemalloc
   shell: 'cat /proc/`pidof mysqld`/environ | grep -c "jemalloc"'
   changed_when: false
-  ignore_errors: yes
+  ignore_errors: true
   register: percona_mysql_jemalloc_enabled
   when: percona_mysql_include_tokudb_variables
   tags: percona_mysql_tokudb_prereq
@@ -15,7 +15,7 @@
 - name: Check if TokuDB is enabled
   shell: 'mysql -BNe ''show plugins'' | grep ACTIVE | cut -f1 | grep -ci TokuDB'
   changed_when: false
-  ignore_errors: yes
+  ignore_errors: true
   register: percona_mysql_tokudb_enabled
   when: percona_mysql_include_tokudb_variables
 
@@ -30,7 +30,7 @@
 - name: Check whether Transparent HugePages are enabled for this session
   shell: 'cat /sys/kernel/mm/transparent_hugepage/defrag | grep -Po "\[\K[^\]]*"'
   changed_when: false
-  ignore_errors: yes
+  ignore_errors: true
   register: percona_mysql_transparent_hugepages_defrag
   when: percona_mysql_include_tokudb_variables
   tags: percona_mysql_tokudb_prereq
@@ -56,7 +56,7 @@
 - name: Check if Audit logging is enabled
   shell: 'mysql -BNe ''show plugins'' | grep ACTIVE | cut -f1 | grep -ci audit_log'
   changed_when: false
-  ignore_errors: yes
+  ignore_errors: true
   register: percona_mysql_auditlog_enabled
   when: percona_mysql_include_auditlog_variables
 

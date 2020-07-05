@@ -1,0 +1,5 @@
+---
+timesync_packages:
+ - ntp
+ - chrony
+ - openntp

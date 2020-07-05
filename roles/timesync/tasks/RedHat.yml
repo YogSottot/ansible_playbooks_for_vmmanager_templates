@@ -1,0 +1,20 @@
+---
+- name: Remove ntp packages
+  yum:
+   name: "{{ timesync_packages }}"
+   state: absent
+  register: timesync_packages_result
+  until: timesync_packages_result is success
+
+- name: Install timesyncd packages
+  yum:
+   name: systemd-timesyncd
+   state: present
+  register: timesyncd_packages_result
+  until: timesyncd_packages_result is success
+
+- name: Setup timesyncd
+  service:
+   name: systemd-timesyncd
+   state: restarted
+   enabled: true

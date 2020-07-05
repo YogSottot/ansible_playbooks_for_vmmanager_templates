@@ -68,3 +68,8 @@
 - include_tasks: configure-apcu.yml
 - include_tasks: configure-opcache.yml
 - include_tasks: configure-fpm.yml
+
+- name: restart php-fpm
+  service:
+    name: "{{ php_fpm_daemon }}"
+    state: restarted

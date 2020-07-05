@@ -13,13 +13,13 @@
   shell: "dig {{ ansible_fqdn }} +short"
   register: certbot_ansible_fqdn_dns_record
   tags:
-   - skip_ansible_lint
+    - skip_ansible_lint
 
 - name: Check A record (IPV4 address) for www hostname
   shell: "dig www.{{ ansible_fqdn }} +short"
   register: certbot_ansible_fqdn_www_dns_record
   tags:
-   - skip_ansible_lint
+    - skip_ansible_lint
 
 #- name: debug
 #  debug:
@@ -54,7 +54,7 @@
     creates: "/etc/letsencrypt/live/{{ ansible_fqdn }}/chain.pem"
   notify:
     - nginx reload
-  ignore_errors: yes
+  ignore_errors: true
   when:
     - "certbot_ansible_fqdn_dns_record.stdout == ansible_default_ipv4.address"
     - "certbot_ansible_fqdn_www_dns_record.stdout == ansible_default_ipv4.address"
@@ -73,7 +73,7 @@
     creates: "/etc/letsencrypt/live/{{ ansible_fqdn }}/chain.pem"
   notify:
     - nginx reload
-  ignore_errors: yes
+  ignore_errors: true
   register: certbot_generate_cert2
   when:
     - "certbot_ansible_fqdn_dns_record.stdout == ansible_default_ipv4.address"
@@ -81,7 +81,7 @@
     #- "'certbot_ansible_fqdn_dns_record.stdout' is subset('ansible_all_ipv4_addresses')"
     #- "not 'certbot_ansible_fqdn_www_dns_record.stdout' is subset('ansible_all_ipv4_addresses')"
   tags:
-  - skip_ansible_lint
+    - skip_ansible_lint
 
 - import_tasks: renew-cron.yml
   when:

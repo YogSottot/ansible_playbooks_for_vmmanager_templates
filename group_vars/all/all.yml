@@ -1,4 +1,9 @@
 ---
 site_user: user
+site_root: "/home/{{ site_user }}/www/default/public_html"
 nginx_user: "{{ site_user }}"
-site_root: "{{ nginx_site_root }}"
+nginx_site_root: "{{ site_root }}"
+
+php_default_version_debian: "7.4"
+remi_repo_php_version_centos7: 74
+remi_repo_php_version: 7.4

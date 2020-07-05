@@ -1,8 +1,11 @@
 ---
 systemd_overrides_config_file_path: /etc/systemd/system/
 systemd_overrides_unit:
+   - apache2
+   - httpd
+   - memcached
+   - mysql
    - mysqld
    - nginx
    - php-fpm
-   - httpd
-   - memcached
+   - php{{ php_default_version_debian }}-fpm

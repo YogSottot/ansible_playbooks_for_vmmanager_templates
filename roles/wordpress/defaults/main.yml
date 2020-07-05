@@ -1,8 +1,0 @@
----
-site_user: wordpress
-wp_version: 5.0.0
-site_domain: "{{ ansible_fqdn }}"
-site_root: "/home/{{ site_user }}/public_html/{{ site_domain }}"
-user_db_name: "{{ site_user }}"
-user_db_user: "{{ site_user }}"
-user_db_password: "{{ lookup('password', '/tmp/mysqlpasswordfile_user length=15') }}"

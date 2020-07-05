@@ -1,0 +1,45 @@
+---
+- name: Download WordPress
+  get_url:
+   url: "https://ru.wordpress.org/latest-ru_RU.tar.gz"
+   dest: "{{ site_root }}/latest-ru_RU.tar.gz"
+   force: false
+
+- name: Extract archive
+  unarchive:
+   src: "{{ site_root }}/latest-ru_RU.tar.gz"
+   dest: "{{ site_root }}"
+   extra_opts: [--strip-components=1]
+   remote_src: true
+
+- name: Fetch random salts for WordPress config
+  local_action: command curl https://api.wordpress.org/secret-key/1.1/salt/ warn=no
+  register: "wp_salt"
+  become: false
+  tags:
+   - skip_ansible_lint
+
+- name: Copy WordPress config file
+  template: src=wp-config.php dest={{ site_root }}
+  run_once: true
+
+- name: Change ownership of WordPress installation
+  file: path={{ site_root }} owner={{ site_user }} group={{ site_user }} state=directory recurse=yes
+
+#- include: selinux.yml
+
+- name: Add wp cron task
+  cron:
+   name: wp-cron task
+   user: "{{ site_user }}"
+   job: "cd {{ site_root }} && /usr/bin/php -f {{ site_root }}/wp-cron.php >/dev/null 2>&1"
+   minute: "*"
+   hour: "*"
+   day: "*"
+   month: "*"
+   weekday: "*"
+
+- name: Delete mysql password
+  file:
+   path: /tmp/mysqlpasswordfile_user_{{ ansible_fqdn }}
+   state: absent

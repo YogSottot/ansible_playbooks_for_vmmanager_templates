@@ -4,7 +4,6 @@ standart_packages:
  - byobu
  - dnsutils
  - curl
- - gdb
  - git
  - htop
  - iftop
@@ -20,3 +19,4 @@ standart_packages:
  - tmux
  - traceroute
  - wget
+ - tar
